@@ -187,6 +187,20 @@ Pushing the tag triggers `.github/workflows/release.yml` (GitHub release,
 SBOM, checksums). Publishing to crates.io is a separate workflow that needs
 `CARGO_REGISTRY_TOKEN`.
 
+## Deploy
+
+Vercel serves the Next.js site from `website-next/` at `/` via
+`vercel.json` (services mode). Import the repo in Vercel, or:
+
+```bash
+npm install -g vercel
+vercel login
+vercel --prod
+```
+
+The docs and wasm demo are deployed separately by GitHub Pages
+(`/docs/`, `/demo/`).
+
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
