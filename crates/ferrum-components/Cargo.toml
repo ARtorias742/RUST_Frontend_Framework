@@ -14,3 +14,6 @@ exclude.workspace = true
 [dependencies]
 ferrum-core = { workspace = true }
 ferrum-styling = { workspace = true }
+[dev-dependencies]
+ferrum-testing = { workspace = true }
+ferrum-native = { workspace = true }

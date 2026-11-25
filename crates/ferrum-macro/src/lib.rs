@@ -26,15 +26,19 @@ use syn::{parse_macro_input, FnArg, ItemFn, Pat};
 ///
 /// generates a `Card` props struct (all fn args + a `children` field) and an
 /// `impl ComponentProps for Card`. Inside `rsx!`, use `Card { title: ... } { .. }`.
+///
+/// `#[component(default)]` also generates `impl Default` (every prop type
+/// must implement `Default`), so callers can start from `Card::default()`.
 #[proc_macro_attribute]
-pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn component(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let default = attr.to_string().trim() == "default";
     let item = parse_macro_input!(item as ItemFn);
-    expand_component(item)
+    expand_component(item, default)
         .unwrap_or_else(|e| e.to_compile_error())
         .into()
 }
 
-fn expand_component(item: ItemFn) -> syn::Result<TS2> {
+fn expand_component(item: ItemFn, default: bool) -> syn::Result<TS2> {
     let ItemFn {
         attrs,
         vis,
@@ -90,12 +94,32 @@ fn expand_component(item: ItemFn) -> syn::Result<TS2> {
         fields.push(quote! { #vis children: Vec<::ferrum_core::VNode> });
     }
 
+    let default_impl = if default {
+        let mut default_idents = idents.clone();
+        if !has_children {
+            default_idents.push(format_ident!("children"));
+        }
+        quote! {
+            impl ::core::default::Default for #name {
+                fn default() -> Self {
+                    Self {
+                        #(#default_idents: ::core::default::Default::default(),)*
+                    }
+                }
+            }
+        }
+    } else {
+        quote! {}
+    };
+
     let body = quote! {
         #(#attrs)*
         #[allow(non_camel_case_types)]
         #vis struct #name {
             #(#fields,)*
         }
+
+        #default_impl
 
         impl ::ferrum_core::ComponentProps for #name {
             fn render(&self) -> ::ferrum_core::VNode {

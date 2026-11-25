@@ -27,6 +27,8 @@ ferrum-devtools = { path = "crates/ferrum-devtools", version = "0.1.0" }
 ferrum-registry = { path = "crates/ferrum-registry", version = "0.1.0" }
 ferrum-security = { path = "crates/ferrum-security", version = "0.1.0" }
 ferrum-conformance = { path = "crates/ferrum-conformance", version = "0.1.0" }
+ferrum-ui-core = { path = "crates/ferrum-ui-core", version = "0.1.0" }
+ferrum-ui = { path = "crates/ferrum-ui", version = "0.1.0" }
 ferrum-ssr = { path = "crates/ferrum-ssr", version = "0.1.0" }
 ferrum-native = { path = "crates/ferrum-native", version = "0.1.0" }
 ferrum-lazy = { path = "crates/ferrum-lazy", version = "0.1.0" }

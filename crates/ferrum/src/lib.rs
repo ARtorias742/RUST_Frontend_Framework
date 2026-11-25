@@ -55,6 +55,16 @@ pub use ferrum_styling::*;
 pub use ferrum_testing::*;
 pub use ferrum_web::*;
 
+/// The Ferrum UI component set (`Button`, `Dialog`, `Menu`, `Tabs`, `Toaster`).
+pub mod ui {
+    pub use ferrum_ui::*;
+}
+
+/// Headless UI behavior (focus scopes, roving tabindex, portal host).
+pub mod ui_core {
+    pub use ferrum_ui_core::*;
+}
+
 /// The recommended import for applications.
 pub mod prelude {
     pub use crate::{

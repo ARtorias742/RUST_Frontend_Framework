@@ -147,8 +147,156 @@ macro_rules! tw {
 }
 
 // ---------------------------------------------------------------------------
+// Class + style merging
+// ---------------------------------------------------------------------------
+
+/// A merged `class` attribute value.
+///
+/// Empty entries are skipped, so conditional classes compose cleanly:
+/// `Class::new("btn").merge(if active { "active" } else { "" })`.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct Class(String);
+
+impl Class {
+    pub fn new(class: impl Into<String>) -> Self {
+        Class(class.into())
+    }
+
+    /// Append a class, skipping empty values.
+    pub fn merge(mut self, class: impl Into<String>) -> Self {
+        let class = class.into();
+        if class.is_empty() {
+            return self;
+        }
+        if !self.0.is_empty() {
+            self.0.push(' ');
+        }
+        self.0.push_str(&class);
+        self
+    }
+
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
+}
+
+impl From<&str> for Class {
+    fn from(value: &str) -> Self {
+        Class::new(value)
+    }
+}
+
+impl From<String> for Class {
+    fn from(value: String) -> Self {
+        Class::new(value)
+    }
+}
+
+impl From<ScopedClass> for Class {
+    fn from(value: ScopedClass) -> Self {
+        Class::new(value.name())
+    }
+}
+
+impl std::ops::Deref for Class {
+    type Target = str;
+
+    fn deref(&self) -> &str {
+        &self.0
+    }
+}
+
+impl std::fmt::Display for Class {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.0)
+    }
+}
+
+/// A merged inline style map. Later `set`/`merge` calls win.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct Style(Vec<(String, String)>);
+
+impl Style {
+    pub fn new() -> Self {
+        Style(Vec::new())
+    }
+
+    /// Set a declaration (replacing an existing one with the same name).
+    pub fn set(mut self, name: impl Into<String>, value: impl Into<String>) -> Self {
+        let name = name.into();
+        let value = value.into();
+        if let Some(slot) = self.0.iter_mut().find(|(n, _)| *n == name) {
+            slot.1 = value;
+        } else {
+            self.0.push((name, value));
+        }
+        self
+    }
+
+    /// Merge another style map; values from `other` win.
+    pub fn merge(mut self, other: Style) -> Self {
+        for (name, value) in other.0 {
+            self = self.set(name, value);
+        }
+        self
+    }
+
+    pub fn get(&self, name: &str) -> Option<&str> {
+        self.0
+            .iter()
+            .find(|(n, _)| n == name)
+            .map(|(_, v)| v.as_str())
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
+
+    /// Serialize as an inline `style` attribute value.
+    pub fn to_css(&self) -> String {
+        let mut out = String::new();
+        for (name, value) in &self.0 {
+            if !out.is_empty() {
+                out.push_str("; ");
+            }
+            out.push_str(name);
+            out.push_str(": ");
+            out.push_str(value);
+        }
+        out
+    }
+}
+
+impl From<&Theme> for Style {
+    fn from(theme: &Theme) -> Self {
+        Style::new()
+            .set("--bg", theme.bg.clone())
+            .set("--fg", theme.fg.clone())
+            .set("--accent", theme.accent.clone())
+            .set("--accent-fg", theme.accent_fg.clone())
+            .set("--muted", theme.muted.clone())
+            .set("--border", theme.border.clone())
+            .set("--danger", theme.danger.clone())
+            .set("--ring", theme.ring.clone())
+            .set("--radius", theme.radius.clone())
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Themes (design tokens)
 // ---------------------------------------------------------------------------
+
+/// UI density. Components use it for padding/control height.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum Density {
+    #[default]
+    Comfortable,
+    Compact,
+}
 
 /// Design tokens. Applied as CSS custom properties by `ThemeRoot`.
 #[derive(Clone, Debug)]
@@ -156,8 +304,13 @@ pub struct Theme {
     pub bg: String,
     pub fg: String,
     pub accent: String,
+    pub accent_fg: String,
     pub muted: String,
+    pub border: String,
+    pub danger: String,
+    pub ring: String,
     pub radius: String,
+    pub density: Density,
     /// Text direction: "ltr" or "rtl".
     pub dir: &'static str,
 }
@@ -174,8 +327,13 @@ impl Theme {
             bg: "#ffffff".into(),
             fg: "#111827".into(),
             accent: "#2563eb".into(),
+            accent_fg: "#ffffff".into(),
             muted: "#6b7280".into(),
+            border: "#e5e7eb".into(),
+            danger: "#dc2626".into(),
+            ring: "#93c5fd".into(),
             radius: "8px".into(),
+            density: Density::Comfortable,
             dir: "ltr",
         }
     }
@@ -185,8 +343,13 @@ impl Theme {
             bg: "#111827".into(),
             fg: "#f9fafb".into(),
             accent: "#60a5fa".into(),
+            accent_fg: "#111827".into(),
             muted: "#9ca3af".into(),
+            border: "#374151".into(),
+            danger: "#f87171".into(),
+            ring: "#3b82f6".into(),
             radius: "8px".into(),
+            density: Density::Comfortable,
             dir: "ltr",
         }
     }
@@ -196,12 +359,77 @@ impl Theme {
         self
     }
 
+    pub fn with_accent(mut self, accent: impl Into<String>) -> Self {
+        self.accent = accent.into();
+        self
+    }
+
+    pub fn with_radius(mut self, radius: impl Into<String>) -> Self {
+        self.radius = radius.into();
+        self
+    }
+
+    pub fn with_density(mut self, density: Density) -> Self {
+        self.density = density;
+        self
+    }
+
     /// The theme as CSS custom-property declarations (for the `style` attr).
     pub fn style_string(&self) -> String {
-        format!(
-            "--bg: {}; --fg: {}; --accent: {}; --muted: {}; --radius: {};",
-            self.bg, self.fg, self.accent, self.muted, self.radius
-        )
+        Style::from(self).to_css()
+    }
+
+    /// The same tokens as a renderer-agnostic native style map.
+    pub fn native_style(&self) -> NativeStyle {
+        NativeStyle {
+            bg: self.bg.clone(),
+            fg: self.fg.clone(),
+            accent: self.accent.clone(),
+            accent_fg: self.accent_fg.clone(),
+            muted: self.muted.clone(),
+            border: self.border.clone(),
+            danger: self.danger.clone(),
+            ring: self.ring.clone(),
+            radius: self.radius.clone(),
+            density: self.density,
+            dir: self.dir,
+        }
+    }
+}
+
+/// A renderer-agnostic style map for the native scene graph.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct NativeStyle {
+    pub bg: String,
+    pub fg: String,
+    pub accent: String,
+    pub accent_fg: String,
+    pub muted: String,
+    pub border: String,
+    pub danger: String,
+    pub ring: String,
+    pub radius: String,
+    pub density: Density,
+    pub dir: &'static str,
+}
+
+impl NativeStyle {
+    /// Convert to a CSS custom-property string (web parity).
+    pub fn to_css(&self) -> String {
+        let theme = Theme {
+            bg: self.bg.clone(),
+            fg: self.fg.clone(),
+            accent: self.accent.clone(),
+            accent_fg: self.accent_fg.clone(),
+            muted: self.muted.clone(),
+            border: self.border.clone(),
+            danger: self.danger.clone(),
+            ring: self.ring.clone(),
+            radius: self.radius.clone(),
+            density: self.density,
+            dir: self.dir,
+        };
+        theme.style_string()
     }
 }
 

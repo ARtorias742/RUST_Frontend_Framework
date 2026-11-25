@@ -186,6 +186,56 @@ pub const CATALOG: &[ComponentMeta] = &[
         category: "layout",
         since: "1.0",
     },
+    ComponentMeta {
+        name: "Stat",
+        category: "data-display",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Command",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Sheet",
+        category: "overlay",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Popover",
+        category: "overlay",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "HoverCard",
+        category: "overlay",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "NavigationMenu",
+        category: "navigation",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Tree",
+        category: "data-display",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Timeline",
+        category: "data-display",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Calendar",
+        category: "data-display",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "DatePicker",
+        category: "form",
+        since: "1.0",
+    },
 ];
 
 // ---------------------------------------------------------------------------
@@ -1090,4 +1140,302 @@ pub fn Skeleton(lines: usize, width: String) -> VNode {
         .map(|_| rsx! { div { class: bar.name(), style: style.clone() } })
         .collect();
     rsx! { div { aria-hidden: true, {rows} } }
+}
+
+// ---------------------------------------------------------------------------
+// Phase 4: ten more components (added after real-app demand)
+// ---------------------------------------------------------------------------
+
+/// A compact statistic tile.
+#[component]
+pub fn Stat(label: String, value: String, delta: String) -> VNode {
+    let card = css! {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px 16px;
+        background: var(--bg);
+    };
+    let label_cls = css! { color: var(--muted); font-size: 0.85rem; };
+    let value_cls = css! { font-size: 1.5rem; font-weight: 600; };
+    let delta_cls = css! { color: var(--accent); font-size: 0.85rem; };
+    rsx! {
+        div { class: card.name(),
+            div { class: label_cls.name(), "{label}" }
+            div { class: value_cls.name(), "{value}" }
+            div { class: delta_cls.name(), "{delta}" }
+        }
+    }
+}
+
+/// A command palette input with a filtered list.
+#[component]
+pub fn Command(
+    placeholder: String,
+    value: String,
+    on_input: Option<EventHandler>,
+    items: Vec<String>,
+) -> VNode {
+    let input = css! {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--bg);
+        color: var(--fg);
+        font: inherit;
+    };
+    let list = css! { margin: 8px 0 0 0; padding: 0; list-style: none; };
+    let row = css! { padding: 6px 10px; border-radius: 4px; };
+    let filtered: Vec<String> = items
+        .iter()
+        .filter(|item| value.is_empty() || item.to_lowercase().contains(&value.to_lowercase()))
+        .cloned()
+        .collect();
+    let rows: Vec<VNode> = filtered
+        .iter()
+        .map(|item| rsx! { li { class: row.name(), role: "option", "{item}" } })
+        .collect();
+    let input_node = match on_input {
+        Some(handler) => {
+            let h = handler.clone();
+            rsx! {
+                input {
+                    class: input.name(),
+                    placeholder: placeholder,
+                    value: value,
+                    oninput: move |e: &ferrum_core::FerrumEvent| h(e),
+                }
+            }
+        }
+        None => rsx! { input { class: input.name(), placeholder: placeholder, value: value } },
+    };
+    rsx! {
+        div {
+            {input_node}
+            ul { class: list.name(), role: "listbox", {rows} }
+        }
+    }
+}
+
+/// A side sheet. Render nothing when `open` is false.
+#[component]
+pub fn Sheet(
+    open: bool,
+    title: String,
+    on_close: Option<EventHandler>,
+    children: Vec<VNode>,
+) -> VNode {
+    if !*open {
+        return VNode::Empty;
+    }
+    let backdrop = css! {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: flex-end;
+        z-index: 1000;
+    };
+    let panel = css! {
+        width: min(420px, 90vw);
+        height: 100%;
+        background: var(--bg);
+        color: var(--fg);
+        border-inline-start: 1px solid var(--border);
+        padding: 20px;
+    };
+    let head =
+        css! { display: flex; justify-content: space-between; align-items: center; gap: 16px; };
+    let close = css! { all: unset; cursor: pointer; font-size: 1.2rem; line-height: 1; };
+    let close_node = match on_close {
+        Some(handler) => {
+            let h = handler.clone();
+            rsx! { button { class: close.name(), aria-label: "Close", onclick: move |e: &ferrum_core::FerrumEvent| h(e), "×" } }
+        }
+        None => rsx! { span { class: close.name(), aria-hidden: true, "×" } },
+    };
+    rsx! {
+        div { class: backdrop.name(),
+            div { class: panel.name(), role: "dialog", aria-modal: true, aria-label: title,
+                div { class: head.name(), h2 { "{title}" } {close_node} }
+                {children}
+            }
+        }
+    }
+}
+
+/// A floating panel. Render nothing when `open` is false.
+#[component]
+pub fn Popover(open: bool, children: Vec<VNode>) -> VNode {
+    if !*open {
+        return VNode::Empty;
+    }
+    let panel = css! {
+        position: absolute;
+        z-index: 50;
+        min-width: 180px;
+        background: var(--bg);
+        color: var(--fg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 10px;
+    };
+    rsx! { div { class: panel.name(), role: "dialog", {children} } }
+}
+
+/// A hover/focus card.
+#[component]
+pub fn HoverCard(text: String, children: Vec<VNode>) -> VNode {
+    let wrap = css! { position: relative; display: inline-block; };
+    let card = css! {
+        position: absolute;
+        bottom: 100%;
+        inset-inline-start: 0;
+        min-width: 180px;
+        background: var(--bg);
+        color: var(--fg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 10px;
+        opacity: 0;
+        pointer-events: none;
+    };
+    rsx! {
+        span { class: wrap.name(),
+            {children}
+            span { class: card.name(), role: "tooltip", "{text}" }
+        }
+    }
+}
+
+/// One navigation entry.
+#[derive(Clone, Debug)]
+pub struct NavItem {
+    pub label: String,
+    pub href: String,
+}
+
+/// A horizontal navigation menu.
+#[component]
+pub fn NavigationMenu(items: Vec<NavItem>) -> VNode {
+    let nav = css! { display: flex; gap: 12px; align-items: center; };
+    let link = css! { color: var(--fg); text-decoration: none; };
+    let nodes: Vec<VNode> = items
+        .iter()
+        .map(|item| rsx! { a { class: link.name(), href: item.href.clone(), "{item.label}" } })
+        .collect();
+    rsx! { nav { class: nav.name(), aria-label: "Main", {nodes} } }
+}
+
+/// A tree node.
+#[derive(Clone, Debug)]
+pub struct TreeNode {
+    pub label: String,
+    pub children: Vec<TreeNode>,
+}
+
+fn tree_rows(nodes: &[TreeNode], depth: usize) -> Vec<VNode> {
+    let mut out = Vec::new();
+    let row = css! { padding: 2px 0; };
+    for node in nodes {
+        let style = format!("padding-inline-start: {}px;", depth * 16);
+        out.push(rsx! {
+            div { class: row.name(), style: style, "{node.label}" }
+        });
+        out.extend(tree_rows(&node.children, depth + 1));
+    }
+    out
+}
+
+/// A file/folder tree.
+#[component]
+pub fn Tree(nodes: Vec<TreeNode>) -> VNode {
+    let rows = tree_rows(nodes, 0);
+    rsx! { div { role: "tree", {rows} } }
+}
+
+/// One timeline entry.
+#[derive(Clone, Debug)]
+pub struct TimelineItem {
+    pub title: String,
+    pub detail: String,
+}
+
+/// A vertical timeline.
+#[component]
+pub fn Timeline(items: Vec<TimelineItem>) -> VNode {
+    let list = css! { list-style: none; margin: 0; padding: 0; };
+    let item = css! { padding: 8px 0; border-inline-start: 2px solid var(--border); padding-inline-start: 12px; };
+    let title = css! { font-weight: 600; };
+    let detail = css! { color: var(--muted); font-size: 0.9rem; };
+    let rows: Vec<VNode> = items
+        .iter()
+        .map(|i| {
+            rsx! {
+                li { class: item.name(),
+                    div { class: title.name(), "{i.title}" }
+                    div { class: detail.name(), "{i.detail}" }
+                }
+            }
+        })
+        .collect();
+    rsx! { ol { class: list.name(), {rows} } }
+}
+
+/// A month calendar grid.
+#[component]
+pub fn Calendar(month: String, days: Vec<u32>) -> VNode {
+    let grid = css! {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        max-width: 320px;
+    };
+    let day = css! {
+        padding: 6px;
+        text-align: center;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        font-size: 0.85rem;
+    };
+    let title = css! { font-weight: 600; margin: 0 0 8px 0; };
+    let cells: Vec<VNode> = days
+        .iter()
+        .map(|d| rsx! { div { class: day.name(), "{d}" } })
+        .collect();
+    rsx! {
+        div {
+            p { class: title.name(), "{month}" }
+            div { class: grid.name(), role: "grid", {cells} }
+        }
+    }
+}
+
+/// A native date input.
+#[component]
+pub fn DatePicker(value: String, on_change: Option<EventHandler>) -> VNode {
+    let input = css! {
+        box-sizing: border-box;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--bg);
+        color: var(--fg);
+        font: inherit;
+    };
+    match on_change {
+        Some(handler) => {
+            let h = handler.clone();
+            rsx! {
+                input {
+                    class: input.name(),
+                    type: "date",
+                    value: value,
+                    onchange: move |e: &ferrum_core::FerrumEvent| h(e),
+                }
+            }
+        }
+        None => rsx! { input { class: input.name(), type: "date", value: value } },
+    }
 }

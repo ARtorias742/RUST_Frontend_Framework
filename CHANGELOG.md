@@ -18,7 +18,7 @@ First public alpha. The architecture is in place; the API is not stable.
 - `ferrum-native`: scene graph + accessibility tree (no window/GPU yet).
 - `ferrum-testing`: headless DOM + `TestRenderer`.
 - `ferrum-router`, `ferrum-data`, `ferrum-styling`, `ferrum-lazy`.
-- `ferrum-components`: 30 widgets + `CATALOG`.
+- `ferrum-components`: 40 widgets + `CATALOG`.
 - `ferrum-ssr`: string/writer/stream/document rendering.
 - `ferrum-devtools`: inspector, state timeline, network panel, overlay.
 - `ferrum-security`: HTML sanitizer, CSP builder, no-eval lint.
@@ -33,6 +33,13 @@ First public alpha. The architecture is in place; the API is not stable.
 - `website-next`: Next.js 14 + Tailwind + shadcn/ui + Framer Motion site.
 - `vscode-extension`: commands, snippets, rsx! highlighting, `.vsix` package.
 - `scripts/install.sh` CLI installer; local release artifacts in `dist/`.
+- Ferrum UI Phase 1–4: semantic tokens + `Class`/`Style`, `ferrum-ui-core`
+  (focus scope, roving tabindex, portal host), `#[component(default)]`.
+- `ferrum add` source distribution: button, dialog, menu, tabs, toast;
+  `--list`, `--dry-run`, `--diff`, `--force`, manifest.
+- `ferrum-ui` crate: Button, Dialog, Menu, Tabs, Toaster with ARIA/keyboard.
+- 10 more components (40 total) + web/native parity tests.
+- Template registry with versions/deprecation; realworld uses `Dialog`.
 - `GOVERNANCE.md`, `SUPPORT.md`, `deny.toml`, clippy gate.
 
 ### Known limitations

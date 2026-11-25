@@ -14,5 +14,6 @@ ferrum-core = { workspace = true }
 ferrum-web = { workspace = true }
 ferrum-components = { workspace = true }
 ferrum-styling = { workspace = true }
+ferrum-ui = { workspace = true }
 wasm-bindgen = { workspace = true }
 web-sys = { workspace = true }

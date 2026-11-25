@@ -340,3 +340,89 @@ mod tests {
         ));
     }
 }
+
+// ---------------------------------------------------------------------------
+// Template registry (ferrum add)
+// ---------------------------------------------------------------------------
+
+/// One installable UI component template.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct TemplateEntry {
+    pub name: String,
+    pub version: Version,
+    pub category: String,
+    /// Files written relative to the target directory.
+    pub files: Vec<String>,
+    /// Crates the generated source depends on.
+    pub deps: Vec<String>,
+    pub deprecation: Deprecation,
+}
+
+/// A versioned registry of copy-paste component templates.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct TemplateRegistry {
+    entries: BTreeMap<String, TemplateEntry>,
+}
+
+impl TemplateRegistry {
+    pub fn new() -> Self {
+        TemplateRegistry::default()
+    }
+
+    pub fn register(
+        &mut self,
+        name: &str,
+        version: Version,
+        category: &str,
+        files: &[&str],
+        deps: &[&str],
+    ) -> &mut Self {
+        self.entries.insert(
+            name.to_string(),
+            TemplateEntry {
+                name: name.to_string(),
+                version,
+                category: category.to_string(),
+                files: files.iter().map(|f| f.to_string()).collect(),
+                deps: deps.iter().map(|d| d.to_string()).collect(),
+                deprecation: Deprecation::Active,
+            },
+        );
+        self
+    }
+
+    pub fn get(&self, name: &str) -> Option<&TemplateEntry> {
+        self.entries.get(name)
+    }
+
+    pub fn contains(&self, name: &str) -> bool {
+        self.entries.contains_key(name)
+    }
+
+    pub fn len(&self) -> usize {
+        self.entries.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.entries.is_empty()
+    }
+
+    pub fn iter(&self) -> impl Iterator<Item = &TemplateEntry> {
+        self.entries.values()
+    }
+
+    pub fn deprecate(&mut self, name: &str, since: Version, message: &str) -> &mut Self {
+        if let Some(entry) = self.entries.get_mut(name) {
+            entry.deprecation = Deprecation::Deprecated {
+                since,
+                message: message.to_string(),
+            };
+        }
+        self
+    }
+
+    pub fn remove_template(&mut self, name: &str) -> &mut Self {
+        self.entries.remove(name);
+        self
+    }
+}

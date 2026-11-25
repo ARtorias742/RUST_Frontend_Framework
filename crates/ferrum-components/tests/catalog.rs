@@ -3,8 +3,8 @@
 use ferrum_components::CATALOG;
 
 #[test]
-fn catalog_has_thirty_components() {
-    assert_eq!(CATALOG.len(), 30, "the 1.0 library ships 30 components");
+fn catalog_has_forty_components() {
+    assert_eq!(CATALOG.len(), 40, "the 1.0 library ships 40 components");
 }
 
 #[test]

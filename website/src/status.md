@@ -7,7 +7,7 @@
 | Web renderer | Implemented; wasm tests in CI |
 | SSR | Working, tested |
 | Router + data | Working, tested |
-| Styling + 30 components | Working, headless-tested |
+| Styling + 40 components | Working, headless-tested |
 | DevTools | Working |
 | Native renderer | Scene graph + a11y tree only |
 | Security | Basic, not audited |

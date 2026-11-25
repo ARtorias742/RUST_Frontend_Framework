@@ -4,7 +4,7 @@
 
 Ferrum is a Rust frontend framework with a React-shaped API: `rsx!` +
 `#[component]`, hooks, keyed reconciliation, SSR/hydration, routing, data,
-scoped styling, 30 components, DevTools, and a native scene-graph backend.
+scoped styling, 40 components, DevTools, and a native scene-graph backend.
 
 The architecture is in place. The API is not stable. This alpha exists to
 validate the design with real applications before 1.0.
@@ -28,7 +28,7 @@ validate the design with real applications before 1.0.
 - Rust end to end, one type system, no JS bridge in component code.
 - A small explicit core with replaceable renderers.
 - Safe by default: no `eval`, escaped SSR, allowlist sanitizer, nonce CSP.
-- Router, data, styling, 30 components, DevTools and SSR in the crate graph.
+- Router, data, styling, 40 components, DevTools and SSR in the crate graph.
 
 ## Demo
 

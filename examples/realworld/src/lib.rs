@@ -10,6 +10,7 @@
 use ferrum_components::{Button, Card, Checkbox, EmptyState, Input, ThemeRoot};
 use ferrum_core::{component, rsx, use_effect_every, use_state, FerrumEvent, VNode};
 use ferrum_styling::Theme;
+use ferrum_ui::Dialog;
 use ferrum_web::{AppHandle, FerrumEventExt};
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
@@ -91,6 +92,7 @@ fn TaskBoard() -> VNode {
     let (tasks, set_tasks) = use_state(load_tasks);
     let (draft, set_draft) = use_state(String::new);
     let (filter, set_filter) = use_state(|| Filter::All);
+    let (about_open, set_about_open) = use_state(|| false);
 
     // Persist after every commit. A production app would debounce or use a
     // storage adapter; the demo keeps it explicit.
@@ -201,6 +203,14 @@ fn TaskBoard() -> VNode {
             div {
                 h1 { "Ferrum Realworld" }
                 p { "A persistent task board. Refresh the page — your tasks survive." }
+                Button {
+                    variant: "ghost",
+                    on_click: Some(Rc::new({
+                        let set_about_open = set_about_open.clone();
+                        move |_: &FerrumEvent| set_about_open.set(true)
+                    }) as ferrum_core::EventHandler),
+                    "About"
+                }
                 Card { title: "Task board",
                     div { class: "add",
                         Input {
@@ -216,6 +226,13 @@ fn TaskBoard() -> VNode {
                     {body}
                 }
                 p { class: "hint", "Built with the public ferrum API only." }
+                Dialog {
+                    open: about_open,
+                    title: "About this demo",
+                    on_close: Some(Rc::new(move |_: &FerrumEvent| set_about_open.set(false)) as ferrum_core::EventHandler),
+                    p { "A task board built with ferrum, ferrum-components and ferrum-ui." }
+                    p { "The dialog uses the same source on web and native." }
+                }
             }
         }
     }

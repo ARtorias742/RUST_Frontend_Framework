@@ -124,6 +124,7 @@ dependencies = [
  "ferrum-components",
  "ferrum-core",
  "ferrum-styling",
+ "ferrum-ui",
  "ferrum-web",
  "wasm-bindgen",
  "web-sys",
@@ -197,6 +198,8 @@ dependencies = [
  "ferrum-ssr",
  "ferrum-styling",
  "ferrum-testing",
+ "ferrum-ui",
+ "ferrum-ui-core",
  "ferrum-web",
 ]
 
@@ -222,7 +225,9 @@ name = "ferrum-components"
 version = "0.1.0"
 dependencies = [
  "ferrum-core",
+ "ferrum-native",
  "ferrum-styling",
+ "ferrum-testing",
 ]
 
 [[package]]
@@ -350,6 +355,21 @@ dependencies = [
  "ferrum-router",
  "ferrum-styling",
 ]
+
+[[package]]
+name = "ferrum-ui"
+version = "0.1.0"
+dependencies = [
+ "ferrum-core",
+ "ferrum-native",
+ "ferrum-styling",
+ "ferrum-testing",
+ "ferrum-ui-core",
+]
+
+[[package]]
+name = "ferrum-ui-core"
+version = "0.1.0"
 
 [[package]]
 name = "ferrum-web"

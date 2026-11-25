@@ -26,6 +26,8 @@ ferrum-testing = { workspace = true }
 ferrum-devtools = { workspace = true }
 ferrum-security = { workspace = true }
 ferrum-registry = { workspace = true }
+ferrum-ui = { workspace = true }
+ferrum-ui-core = { workspace = true }
 
 [dev-dependencies]
 ferrum-conformance = { workspace = true }

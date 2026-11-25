@@ -20,18 +20,18 @@ fn shipped() -> Registry {
 #[test]
 fn registry_loads_the_full_catalog() {
     let r = shipped();
-    assert_eq!(r.len(), 30);
+    assert_eq!(r.len(), 40);
     assert!(r.contains("Button"));
-    assert_eq!(r.active().count(), 30);
+    assert_eq!(r.active().count(), 40);
 }
 
 #[test]
 fn adding_a_component_is_a_minor_change() {
     let a = shipped();
     let mut b = a.clone();
-    b.register("Command", Version::new(1, 1, 0), "action");
+    b.register("Widget", Version::new(1, 1, 0), "action");
     let diff = a.diff(&b);
-    assert_eq!(diff, vec![Change::Added("Command".into())]);
+    assert_eq!(diff, vec![Change::Added("Widget".into())]);
     assert!(!a.is_breaking(&b));
     assert!(diff.iter().all(Change::is_minor));
 }

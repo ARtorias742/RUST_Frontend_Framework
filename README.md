@@ -4,7 +4,7 @@
 >
 > Ferrum is a Rust frontend framework with a React-shaped API: `rsx!` +
 > `#[component]`, hooks, keyed reconciliation, SSR/hydration, routing, data,
-> scoped styling, a 30-component library, DevTools, and a native scene-graph
+> scoped styling, a 40-component library, DevTools, and a native scene-graph
 > backend. This is a **public alpha** to validate the architecture and API
 > with real users. Expect breaking changes before 1.0.
 
@@ -20,7 +20,7 @@ alternative to JS-first frameworks — not a React clone.
 | Web renderer (`web-sys`) | Implemented; wasm tests are now in CI |
 | SSR (string/stream/document) | Working, tested |
 | Router + data (`use_query`) | Working, tested |
-| Styling + themes + 30 components | Working, headless-tested |
+| Styling + themes + 40 components | Working, headless-tested |
 | DevTools (inspector/timeline/network) | Working |
 | Native renderer | **Scene graph + a11y tree only** — no window/GPU yet |
 | Security (sanitizer/CSP) | Basic, **not audited** |
@@ -43,6 +43,16 @@ scripts/install.sh
 # 3. Cargo (once 0.1 is published)
 cargo add ferrum
 ```
+
+## Ferrum UI
+
+```bash
+ferrum add button dialog menu tabs toast
+ferrum list
+```
+
+Source-distributed components land in `src/ui/`; edit them freely. The
+headless behavior (focus scope, roving tabindex) lives in `ferrum-ui-core`.
 
 ## Quickstart
 
@@ -118,7 +128,7 @@ Install the VSIX from the Extensions panel, or
 | `ferrum-router` | Routes, params, redirects, nested layouts |
 | `ferrum-data` | Query cache, dedup, `use_query` |
 | `ferrum-styling` | Scoped CSS, design tokens, themes |
-| `ferrum-components` | 30 widgets + `CATALOG` |
+| `ferrum-components` | 40 widgets + `CATALOG` |
 | `ferrum-ssr` | String/writer/stream/document rendering |
 | `ferrum-lazy` | Code-splitting boundary |
 | `ferrum-devtools` | Inspector, state timeline, network panel |
@@ -161,7 +171,7 @@ scripts/e2e.sh                    # Playwright + a local server
 - **Small explicit core.** A tiny VNode IR; web, native and headless are
   replaceable backends over one reconciler.
 - **Safe by default.** No `eval`, escaped SSR, allowlist sanitizer, nonce CSP.
-- **Batteries for the 80%.** Router, data, styling, 30 components, DevTools,
+- **Batteries for the 80%.** Router, data, styling, 40 components, DevTools,
   SSR — without leaving the Rust crate graph.
 
 It is not trying to be React. It is trying to be the smallest Rust framework
