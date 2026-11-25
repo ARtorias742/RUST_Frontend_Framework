@@ -212,7 +212,8 @@ pub fn sanitize_html(input: &str, policy: &Policy) -> String {
             i += 1;
             continue;
         }
-        let tag = &input[name_start..j];
+        let tag = String::from_utf8_lossy(&bytes[name_start..j]).into_owned();
+        let tag = tag.as_str();
 
         // Find the end of the tag, respecting quotes.
         let (tag_end, self_closing) = scan_tag_end(bytes, j);
@@ -347,7 +348,7 @@ fn parse_attrs(input: &str) -> Vec<(String, String)> {
             i += 1;
             continue;
         }
-        let name = input[name_start..i].to_string();
+        let name = String::from_utf8_lossy(&bytes[name_start..i]).into_owned();
         while i < bytes.len() && bytes[i].is_ascii_whitespace() {
             i += 1;
         }
@@ -364,7 +365,7 @@ fn parse_attrs(input: &str) -> Vec<(String, String)> {
                 while i < bytes.len() && bytes[i] != quote {
                     i += 1;
                 }
-                value = input[start..i].to_string();
+                value = String::from_utf8_lossy(&bytes[start..i]).into_owned();
                 if i < bytes.len() {
                     i += 1;
                 }
@@ -373,7 +374,7 @@ fn parse_attrs(input: &str) -> Vec<(String, String)> {
                 while i < bytes.len() && !bytes[i].is_ascii_whitespace() && bytes[i] != b'>' {
                     i += 1;
                 }
-                value = input[start..i].to_string();
+                value = String::from_utf8_lossy(&bytes[start..i]).into_owned();
             }
         }
         out.push((name, value));
@@ -494,6 +495,17 @@ mod tests {
         assert!(header.contains("'nonce-abc123'"));
         assert!(!header.contains("'unsafe-eval'"));
         assert!(csp.meta().contains("Content-Security-Policy"));
+    }
+
+    #[test]
+    fn sanitizer_handles_multibyte_without_panicking() {
+        let input = "<p title=\"é中\">é中</p>";
+        let out = sanitize_html(input, &Policy::strict());
+        assert!(out.contains("é中"));
+
+        // Fuzz-found byte sequence (invalid UTF-8 -> lossy replacement).
+        let lossy = String::from_utf8_lossy(&[2, 38, 184, 2]);
+        let _ = sanitize_html(&lossy, &Policy::strict());
     }
 
     #[test]

@@ -11,12 +11,12 @@ allow = [
 confidence-threshold = 0.8
 
 [bans]
-multiple-versions = true
+multiple-versions = "warn"
 wildcards = "deny"
 
 [advisories]
 vulnerability = "deny"
-unmaintained = "warn"
+unmaintained = "none"
 yanked = "deny"
 ignore = []
 

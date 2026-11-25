@@ -111,7 +111,9 @@ impl Renderer for WebBackend {
             handler(&fev);
         });
         let function: &js_sys::Function = closure.as_ref().unchecked_ref();
-        node.add_event_listener_with_callback(name, function)
+        // DOM event types have no `on` prefix: `onclick` -> `click`.
+        let event = name.strip_prefix("on").unwrap_or(name);
+        node.add_event_listener_with_callback(event, function)
             .expect("add_event_listener");
         ListenerHandle(Box::new((name.to_string(), closure)))
     }
