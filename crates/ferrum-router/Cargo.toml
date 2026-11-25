@@ -1,0 +1,10 @@
+[package]
+name = "ferrum-router"
+description = "Declarative router for Ferrum: nested layouts, params, redirects, pluggable history"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }

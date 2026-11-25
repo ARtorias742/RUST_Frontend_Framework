@@ -1,0 +1,16 @@
+# Docs are not committed (roadmap + dev logs)
+/docs/
+/RUST_FRONTEND_ROADMAP.md
+
+# Fuzzing
+fuzz/target/
+fuzz/Cargo.lock
+
+# Rust build artifacts
+/target/
+**/target/
+
+# Editor
+.vscode/
+.idea/
+*.swp

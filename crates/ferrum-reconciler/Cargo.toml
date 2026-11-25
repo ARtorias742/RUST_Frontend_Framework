@@ -1,0 +1,10 @@
+[package]
+name = "ferrum-reconciler"
+description = "Keyed children diffing planner for the Ferrum frontend framework"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { path = "../ferrum-core" }

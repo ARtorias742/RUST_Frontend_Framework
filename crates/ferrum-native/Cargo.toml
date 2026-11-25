@@ -1,0 +1,16 @@
+[package]
+name = "ferrum-native"
+description = "Native renderer backend for Ferrum: scene graph + accessibility tree"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-reconciler = { workspace = true }
+
+[dev-dependencies]
+ferrum-styling = { workspace = true }
+ferrum-components = { workspace = true }
+ferrum-testing = { workspace = true }

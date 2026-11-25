@@ -1,0 +1,12 @@
+[package]
+name = "example-native"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-native = { workspace = true }
+example-shared = { workspace = true }

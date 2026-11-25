@@ -1,0 +1,17 @@
+[package]
+name = "example-devtools"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-web = { workspace = true }
+ferrum-devtools = { workspace = true }
+wasm-bindgen = { workspace = true }
+web-sys = { workspace = true }

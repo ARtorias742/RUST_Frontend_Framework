@@ -1,0 +1,19 @@
+[package]
+name = "ferrum-cli"
+description = "Ferrum CLI: new/dev/build/check/doctor with a dev server (SSE HMR + error overlay)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lib]
+name = "ferrum_dev"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ferrum"
+path = "src/main.rs"
+
+[dependencies]
+ferrum-registry = { workspace = true }
+ferrum-security = { workspace = true }

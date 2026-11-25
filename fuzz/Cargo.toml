@@ -1,0 +1,39 @@
+[package]
+name = "ferrum-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+ferrum-core = { path = "../crates/ferrum-core" }
+ferrum-security = { path = "../crates/ferrum-security" }
+ferrum-ssr = { path = "../crates/ferrum-ssr" }
+ferrum-testing = { path = "../crates/ferrum-testing" }
+
+# Prevent this from joining the parent workspace.
+[workspace]
+
+[[bin]]
+name = "sanitize"
+path = "fuzz_targets/sanitize.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "ssr"
+path = "fuzz_targets/ssr.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "reconciler"
+path = "fuzz_targets/reconciler.rs"
+test = false
+doc = false
+bench = false

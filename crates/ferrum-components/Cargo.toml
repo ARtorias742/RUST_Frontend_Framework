@@ -1,0 +1,11 @@
+[package]
+name = "ferrum-components"
+description = "Headless + styled widget library for Ferrum (Button, Card, Badge, ThemeRoot)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-styling = { workspace = true }

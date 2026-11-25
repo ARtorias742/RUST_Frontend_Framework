@@ -1,0 +1,24 @@
+[package]
+name = "ferrum"
+description = "Ferrum: a Rust frontend framework (React-style components, hooks, SSR, native) — 1.0 facade"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-reconciler = { workspace = true }
+ferrum-web = { workspace = true }
+ferrum-router = { workspace = true }
+ferrum-data = { workspace = true }
+ferrum-styling = { workspace = true }
+ferrum-components = { workspace = true }
+ferrum-ssr = { workspace = true }
+ferrum-native = { workspace = true }
+ferrum-lazy = { workspace = true }
+ferrum-testing = { workspace = true }
+ferrum-devtools = { workspace = true }
+ferrum-security = { workspace = true }
+ferrum-registry = { workspace = true }
+ferrum-conformance = { workspace = true }

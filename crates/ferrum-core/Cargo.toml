@@ -1,0 +1,10 @@
+[package]
+name = "ferrum-core"
+description = "Core IR (VNode), components, props, keys and events for the Ferrum frontend framework"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-macro = { workspace = true }

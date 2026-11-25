@@ -1,0 +1,9 @@
+[package]
+name = "ferrum-security"
+description = "Ferrum security primitives: HTML sanitizer, CSP builder, and no-eval checks"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]

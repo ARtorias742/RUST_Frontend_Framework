@@ -1,0 +1,20 @@
+[package]
+name = "ferrum-web"
+description = "Web (WASM + DOM) renderer for the Ferrum frontend framework"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-reconciler = { workspace = true }
+ferrum-router = { workspace = true }
+ferrum-styling = { workspace = true }
+wasm-bindgen = { workspace = true }
+web-sys = { workspace = true }
+js-sys = { workspace = true }
+
+[dev-dependencies]
+wasm-bindgen-test = { workspace = true }
+ferrum-components = { workspace = true }

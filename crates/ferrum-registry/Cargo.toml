@@ -1,0 +1,11 @@
+[package]
+name = "ferrum-registry"
+description = "Ferrum component registry: semantic versioning, deprecation policy, and compatibility diffs"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+[dev-dependencies]
+ferrum-components = { workspace = true }

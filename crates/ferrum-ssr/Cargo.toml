@@ -1,0 +1,12 @@
+[package]
+name = "ferrum-ssr"
+description = "Server-side rendering for Ferrum: VNode -> HTML string/stream"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-router = { workspace = true }
+ferrum-styling = { workspace = true }

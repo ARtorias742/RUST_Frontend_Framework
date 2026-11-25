@@ -1,0 +1,48 @@
+[workspace]
+resolver = "2"
+members = ["crates/*", "examples/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/ferrum-rs/ferrum"
+
+[workspace.dependencies]
+ferrum-core = { path = "crates/ferrum-core" }
+ferrum-macro = { path = "crates/ferrum-macro" }
+ferrum-reconciler = { path = "crates/ferrum-reconciler" }
+ferrum-web = { path = "crates/ferrum-web" }
+ferrum-router = { path = "crates/ferrum-router" }
+ferrum-data = { path = "crates/ferrum-data" }
+ferrum-styling = { path = "crates/ferrum-styling" }
+ferrum-components = { path = "crates/ferrum-components" }
+ferrum-testing = { path = "crates/ferrum-testing" }
+ferrum-devtools = { path = "crates/ferrum-devtools" }
+ferrum-registry = { path = "crates/ferrum-registry" }
+ferrum-security = { path = "crates/ferrum-security" }
+ferrum-conformance = { path = "crates/ferrum-conformance" }
+ferrum-ssr = { path = "crates/ferrum-ssr" }
+ferrum-native = { path = "crates/ferrum-native" }
+ferrum-lazy = { path = "crates/ferrum-lazy" }
+example-shared = { path = "examples/shared" }
+wasm-bindgen = "0.2"
+wasm-bindgen-test = "0.3"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = [
+    "Document",
+    "Window",
+    "Element",
+    "Node",
+    "Text",
+    "Event",
+    "EventTarget",
+    "HtmlElement",
+    "HtmlInputElement",
+    "HtmlSelectElement",
+    "HtmlHeadElement",
+    "History",
+    "Location",
+    "console",
+] }
+js-sys = "0.3"

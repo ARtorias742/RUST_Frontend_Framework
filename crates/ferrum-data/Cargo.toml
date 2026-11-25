@@ -1,0 +1,10 @@
+[package]
+name = "ferrum-data"
+description = "Data fetching/caching for Ferrum: QueryClient + use_query (React Query-lite)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }

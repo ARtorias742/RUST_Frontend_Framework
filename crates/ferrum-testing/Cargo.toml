@@ -1,0 +1,17 @@
+[package]
+name = "ferrum-testing"
+description = "Headless DOM backend + TestRenderer for testing Ferrum apps natively"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-reconciler = { workspace = true }
+
+[dev-dependencies]
+ferrum-router = { workspace = true }
+ferrum-data = { workspace = true }
+ferrum-components = { workspace = true }
+ferrum-styling = { workspace = true }

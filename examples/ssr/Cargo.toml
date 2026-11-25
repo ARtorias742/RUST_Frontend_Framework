@@ -1,0 +1,11 @@
+[package]
+name = "example-ssr"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-ssr = { workspace = true }

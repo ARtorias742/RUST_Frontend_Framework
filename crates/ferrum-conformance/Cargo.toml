@@ -1,0 +1,13 @@
+[package]
+name = "ferrum-conformance"
+description = "React-subset conformance suite for Ferrum (WPT-like behavioural checks)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[dev-dependencies]
+ferrum-core = { workspace = true }
+ferrum-testing = { workspace = true }
+ferrum-ssr = { workspace = true }

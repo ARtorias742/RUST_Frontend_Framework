@@ -1,0 +1,15 @@
+{
+  "name": "ferrum-e2e",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Playwright end-to-end + visual regression suite for Ferrum",
+  "scripts": {
+    "test": "playwright test",
+    "test:visual": "playwright test visual.spec.ts",
+    "test:devtools": "playwright test devtools.spec.ts",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.49.1"
+  }
+}

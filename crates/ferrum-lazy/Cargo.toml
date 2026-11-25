@@ -1,0 +1,12 @@
+[package]
+name = "ferrum-lazy"
+description = "Code-splitting boundary for Ferrum: render a fallback until a chunk loads"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }
+[dev-dependencies]
+ferrum-testing = { workspace = true }

@@ -1,0 +1,18 @@
+[package]
+name = "ferrum-devtools"
+description = "Ferrum DevTools: component inspector, state timeline, network panel, and in-app overlay"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-reconciler = { workspace = true }
+ferrum-data = { workspace = true }
+
+[dev-dependencies]
+ferrum-testing = { workspace = true }
+ferrum-ssr = { workspace = true }
+ferrum-components = { workspace = true }
+ferrum-styling = { workspace = true }
