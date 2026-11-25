@@ -31,7 +31,7 @@ jobs:
           VERSION="${GITHUB_REF_NAME#v}"
           cargo run -q -p ferrum-cli -- release --version "$VERSION" --sbom-only
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 20
 
