@@ -404,13 +404,11 @@ impl Csp {
 
     /// A fresh random-ish nonce (time + address entropy; no `rand` dependency).
     pub fn random_nonce() -> String {
-        use std::time::{SystemTime, UNIX_EPOCH};
-        let nanos = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .map(|d| d.as_nanos())
-            .unwrap_or(0);
-        let addr = &nanos as *const u128 as u64;
-        format!("{:x}{:x}", nanos, addr)
+        use std::sync::atomic::{AtomicU64, Ordering};
+        static NONCE: AtomicU64 = AtomicU64::new(1);
+        let n = NONCE.fetch_add(1, Ordering::Relaxed);
+        let addr = &n as *const u64 as u64;
+        format!("{:x}{:x}", n, addr)
     }
 
     /// The header value.

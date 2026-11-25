@@ -39,5 +39,7 @@ fn Dashboard() -> VNode {
 pub fn start() {
     let document = web_sys::window().unwrap().document().unwrap();
     let root = document.get_element_by_id("app").unwrap();
-    AppHandle::new(root).render(|| rsx! { Dashboard {} });
+    let app = AppHandle::new(root);
+    app.render(|| rsx! { Dashboard {} });
+    app.forget();
 }

@@ -242,5 +242,7 @@ fn TaskBoard() -> VNode {
 pub fn start() {
     let document = web_sys::window().unwrap().document().unwrap();
     let root = document.get_element_by_id("app").unwrap();
-    AppHandle::new(root).render(|| rsx! { TaskBoard {} });
+    let app = AppHandle::new(root);
+    app.render(|| rsx! { TaskBoard {} });
+    app.forget();
 }

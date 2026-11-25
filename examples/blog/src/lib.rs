@@ -95,4 +95,5 @@ pub fn start() {
     });
     let a2 = app.clone();
     router.on_change(Rc::new(move || a2.re_render()));
+    app.forget();
 }

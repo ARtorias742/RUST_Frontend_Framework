@@ -31,7 +31,6 @@ use ferrum_reconciler::Observer;
 use std::cell::RefCell;
 use std::collections::{HashMap, VecDeque};
 use std::rc::Rc;
-use std::time::Instant;
 
 // ---------------------------------------------------------------------------
 // Records
@@ -131,7 +130,6 @@ pub struct DevToolsStats {
 // ---------------------------------------------------------------------------
 
 struct Inner {
-    started: Instant,
     seq: u64,
     recording: bool,
     components: Vec<ComponentRecord>,
@@ -152,7 +150,6 @@ pub struct DevTools(Rc<RefCell<Inner>>);
 impl DevTools {
     pub fn new() -> Self {
         DevTools(Rc::new(RefCell::new(Inner {
-            started: Instant::now(),
             seq: 0,
             recording: true,
             components: Vec::new(),
@@ -182,7 +179,7 @@ impl DevTools {
         }
         inner.seq += 1;
         let seq = inner.seq;
-        let at_ms = inner.started.elapsed().as_millis();
+        let at_ms = tick();
         inner.timeline.push_back(TimelineEntry {
             seq,
             at_ms,
@@ -374,7 +371,6 @@ impl DevTools {
     pub fn reset(&self) {
         let mut inner = self.0.borrow_mut();
         *inner = Inner {
-            started: Instant::now(),
             seq: 0,
             recording: true,
             components: Vec::new(),
@@ -394,7 +390,7 @@ impl DevTools {
     pub fn snapshot(&self) -> Snapshot {
         let inner = self.0.borrow();
         Snapshot {
-            elapsed_ms: inner.started.elapsed().as_millis(),
+            elapsed_ms: now(),
             components: inner.components.clone(),
             timeline: inner.timeline.iter().cloned().collect(),
             network: inner.network.iter().cloned().collect(),
@@ -499,6 +495,20 @@ impl Default for DevTools {
 
 thread_local! {
     static DEVTOOLS: RefCell<Option<Rc<DevTools>>> = const { RefCell::new(None) };
+    /// WASM-safe monotonic tick (std::time is unavailable on wasm32).
+    static CLOCK: std::cell::Cell<u128> = const { std::cell::Cell::new(0) };
+}
+
+fn tick() -> u128 {
+    CLOCK.with(|c| {
+        let next = c.get() + 1;
+        c.set(next);
+        next
+    })
+}
+
+fn now() -> u128 {
+    CLOCK.with(|c| c.get())
 }
 
 struct ReconcilerBridge(Rc<DevTools>);

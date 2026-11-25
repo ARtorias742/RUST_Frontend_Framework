@@ -4,7 +4,7 @@
 //! `wasm-bindgen-test-runner`; they cannot run in CI-less sandboxes.
 
 use ferrum_core::{component, rsx};
-use ferrum_web::WebRenderer;
+use ferrum_web::{AppHandle, WebRenderer};
 use wasm_bindgen::JsCast;
 use wasm_bindgen_test::{wasm_bindgen_test, wasm_bindgen_test_configure};
 use web_sys::HtmlElement;
@@ -163,6 +163,14 @@ fn event_handler_fires() {
     let button: HtmlElement = root.first_child().unwrap().dyn_into().unwrap();
     button.click();
     assert_eq!(fired.get(), before + 10);
+}
+
+#[wasm_bindgen_test]
+fn app_handle_mounts_into_root() {
+    let root = fresh_root();
+    let app = AppHandle::new(root.clone());
+    app.render(|| rsx! { div { "hi" } });
+    assert_eq!(root.inner_html(), "<div>hi</div>");
 }
 
 #[wasm_bindgen_test]

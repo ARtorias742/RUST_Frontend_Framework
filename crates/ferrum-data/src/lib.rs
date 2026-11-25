@@ -62,34 +62,35 @@ type RequestObserverRef = Rc<dyn RequestObserver>;
 
 thread_local! {
     static REQUEST_OBSERVER: RefCell<Option<RequestObserverRef>> = const { RefCell::new(None) };
-    static REQUEST_EPOCH: Cell<Option<std::time::Instant>> = const { Cell::new(None) };
+    static REQUEST_EPOCH: Cell<u128> = const { Cell::new(0) };
+    static REQUEST_CLOCK: Cell<u128> = const { Cell::new(0) };
+}
+
+fn tick() -> u128 {
+    REQUEST_CLOCK.with(|c| {
+        let next = c.get() + 1;
+        c.set(next);
+        next
+    })
 }
 
 /// Install (or clear with `None`) the request observer.
 pub fn set_request_observer(observer: Option<RequestObserverRef>) {
     REQUEST_OBSERVER.with(|o| *o.borrow_mut() = observer);
-    REQUEST_EPOCH.with(|e| e.set(Some(std::time::Instant::now())));
+    REQUEST_EPOCH.with(|e| e.set(tick()));
 }
 
-fn emit_request(
-    key: &str,
-    phase: RequestPhase,
-    started: std::time::Instant,
-    error: Option<String>,
-) {
+fn emit_request(key: &str, phase: RequestPhase, started: u128, error: Option<String>) {
     REQUEST_OBSERVER.with(|o| {
         let observer = o.borrow().clone();
         if let Some(observer) = observer {
-            let at_ms = REQUEST_EPOCH
-                .with(|e| e.get())
-                .map(|epoch| epoch.elapsed().as_millis())
-                .unwrap_or(0);
+            let at_ms = tick().saturating_sub(REQUEST_EPOCH.with(|e| e.get()));
             observer.request(RequestRecord {
                 key: key.to_string(),
                 phase,
                 at_ms,
                 duration_ms: (phase != RequestPhase::Start)
-                    .then(|| started.elapsed().as_millis() as u64),
+                    .then(|| tick().saturating_sub(started) as u64),
                 error,
             });
         }
@@ -220,7 +221,7 @@ where
         entry.inflight.set(true);
         let entry2 = entry.clone();
         let fut = fetch();
-        let started = std::time::Instant::now();
+        let started = tick();
         let key = key.to_string();
         emit_request(&key, RequestPhase::Start, started, None);
         (client.executor)(Box::pin(async move {

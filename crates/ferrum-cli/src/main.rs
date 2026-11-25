@@ -175,7 +175,9 @@ fn Counter() -> ferrum_core::VNode {
 pub fn start() {
     let document = web_sys::window().unwrap().document().unwrap();
     let root = document.get_element_by_id("app").unwrap();
-    AppHandle::new(root).render(|| rsx! { Counter {} });
+    let app = AppHandle::new(root);
+    app.render(|| rsx! { Counter {} });
+    app.forget();
 }
 "#
             .to_string(),
@@ -217,6 +219,7 @@ pub fn start() {
     });
     let a2 = app.clone();
     router.on_change(Rc::new(move || a2.re_render()));
+    app.forget();
 }
 "#
             .to_string(),
@@ -232,7 +235,8 @@ use wasm_bindgen::prelude::*;
 pub fn start() {
     let document = web_sys::window().unwrap().document().unwrap();
     let root = document.get_element_by_id("app").unwrap();
-    AppHandle::new(root).render(|| {
+    let app = AppHandle::new(root);
+    app.render(|| {
         rsx! {
             ThemeRoot { theme: Theme::light(),
                 Card { title: "Dashboard",
@@ -245,6 +249,7 @@ pub fn start() {
             }
         }
     });
+    app.forget();
 }
 "#
                 .to_string()
@@ -273,7 +278,9 @@ pub fn render_html() -> String {
 pub fn start() {
     let document = web_sys::window().unwrap().document().unwrap();
     let root = document.get_element_by_id("app").unwrap();
-    AppHandle::new(root).render(|| rsx! { Counter {} });
+    let app = AppHandle::new(root);
+    app.render(|| rsx! { Counter {} });
+    app.forget();
 }
 "#
             .to_string(),

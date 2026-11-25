@@ -23,4 +23,5 @@ pub fn start() {
             }
         }
     });
+    app.forget();
 }

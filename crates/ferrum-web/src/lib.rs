@@ -401,6 +401,16 @@ impl AppHandle {
         AppHandle::rerender(&self.inner);
     }
 
+    /// Keep the app alive for the page lifetime.
+    ///
+    /// `AppHandle` unmounts on drop. A `#[wasm_bindgen(start)]` function
+    /// returns immediately, so a local handle would unmount the tree as soon
+    /// as `start` returns. Call `forget()` after the initial render (or store
+    /// the handle in a `thread_local!`/`static`).
+    pub fn forget(self) {
+        std::mem::forget(self);
+    }
+
     /// Unmount the tree (effect cleanups run).
     pub fn unmount(&self) {
         self.inner.borrow_mut().renderer.unmount();

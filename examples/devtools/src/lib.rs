@@ -28,7 +28,8 @@ pub fn start() {
     install();
     let document = web_sys::window().unwrap().document().unwrap();
     let root = document.get_element_by_id("app").unwrap();
-    AppHandle::new(root).render(|| {
+    let app = AppHandle::new(root);
+    app.render(|| {
         rsx! {
             div {
                 Counter {}
@@ -36,4 +37,8 @@ pub fn start() {
             }
         }
     });
+    // The overlay is a snapshot view; re-render once so the initial mount is
+    // visible in the inspector.
+    app.re_render();
+    app.forget();
 }

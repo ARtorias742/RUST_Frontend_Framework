@@ -177,4 +177,5 @@ pub fn start() {
     router.on_change(Rc::new(move || {
         a2.re_render();
     }));
+    app.forget();
 }
