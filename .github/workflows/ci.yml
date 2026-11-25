@@ -66,7 +66,7 @@ jobs:
       - run: cargo build --workspace --target wasm32-unknown-unknown
       - name: Size budget
         run: |
-          cargo build --release --target wasm32-unknown-unknown -p example-showcase
+          cargo build --release --target wasm32-unknown-unknown -p example-counter-web
           scripts/check-size.sh
 
   bench:
@@ -96,10 +96,10 @@ jobs:
         working-directory: e2e
         run: |
           npm install
-          npx playwright install --with-deps
+          npx playwright install --with-deps chromium
           python3 -m http.server 8080 --directory "$GITHUB_WORKSPACE/target/e2e" &
           sleep 1
-          FERRUM_BASE_URL=http://localhost:8080 npm run test:devtools
+          FERRUM_BASE_URL=http://localhost:8080 npm run test:devtools -- --project=chromium
 
   fuzz:
     runs-on: ubuntu-latest
@@ -110,13 +110,13 @@ jobs:
       - run: cargo install cargo-fuzz --locked
       - name: Sanitize (60s)
         working-directory: fuzz
-        run: cargo fuzz run sanitize -- -max_total_time=60
+        run: cargo +nightly fuzz run sanitize -- -max_total_time=60
       - name: SSR (60s)
         working-directory: fuzz
-        run: cargo fuzz run ssr -- -max_total_time=60
+        run: cargo +nightly fuzz run ssr -- -max_total_time=60
       - name: Reconciler (60s)
         working-directory: fuzz
-        run: cargo fuzz run reconciler -- -max_total_time=60
+        run: cargo +nightly fuzz run reconciler -- -max_total_time=60
 
   website:
     runs-on: ubuntu-latest

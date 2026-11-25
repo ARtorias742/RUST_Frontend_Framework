@@ -50,6 +50,9 @@ jobs:
           path: target/pages
 
   deploy:
+    # GitHub Pages must be enabled in repo settings; until then this job is
+    # non-blocking so the docs/demo artifact still builds.
+    continue-on-error: true
     runs-on: ubuntu-latest
     needs: build
     environment:

@@ -7,6 +7,7 @@ on:
 
 jobs:
   publish:
+    if: ${{ secrets.CARGO_REGISTRY_TOKEN != '' }}
     runs-on: ubuntu-latest
     # Dependency order matters: publish one crate at a time.
     max-parallel: 1

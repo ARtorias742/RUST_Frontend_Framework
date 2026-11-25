@@ -156,10 +156,13 @@ fn event_handler_fires() {
     button.click();
     assert_eq!(fired.get(), 1);
     // Re-render replaces listeners with fresh ones; old handler is gone.
+    let before = fired.get();
     let f2 = fired.clone();
     r.render(&rsx! { button { onclick: move |_| f2.set(f2.get() + 10), "go" } });
+    // Re-query after the update: the renderer may replace the node.
+    let button: HtmlElement = root.first_child().unwrap().dyn_into().unwrap();
     button.click();
-    assert_eq!(fired.get(), 11);
+    assert_eq!(fired.get(), before + 10);
 }
 
 #[wasm_bindgen_test]
