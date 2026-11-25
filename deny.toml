@@ -14,12 +14,6 @@ confidence-threshold = 0.8
 multiple-versions = "warn"
 wildcards = "deny"
 
-[advisories]
-vulnerability = "deny"
-unmaintained = "none"
-yanked = "deny"
-ignore = []
-
 [sources]
 unknown-registry = "deny"
 unknown-git = "deny"

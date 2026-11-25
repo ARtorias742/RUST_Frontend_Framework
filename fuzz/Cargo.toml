@@ -10,6 +10,7 @@ cargo-fuzz = true
 [dependencies]
 libfuzzer-sys = "0.4"
 ferrum-core = { path = "../crates/ferrum-core" }
+ferrum-reconciler = { path = "../crates/ferrum-reconciler" }
 ferrum-security = { path = "../crates/ferrum-security" }
 ferrum-ssr = { path = "../crates/ferrum-ssr" }
 ferrum-testing = { path = "../crates/ferrum-testing" }
