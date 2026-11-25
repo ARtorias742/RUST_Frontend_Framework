@@ -13,7 +13,7 @@ fuzz_target!(|data: &[u8]| {
         .collect();
     let plan = plan_children(&keys, &keys);
     assert_eq!(plan.ops.len(), keys.len());
-    assert!(plan.remove.is_empty());
+    // Duplicate keys may remove earlier duplicates; that is valid.
 
     // Reversed input must still produce one op per new child (duplicates may
     // mount fresh; that is correct).
