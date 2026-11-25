@@ -27,7 +27,10 @@ First public alpha. The architecture is in place; the API is not stable.
 - `ferrum-cli`: `new` (4 templates), `dev` (SSE HMR), `build`
   (`--size-budget`), `check`, `doctor`, `release` (SBOM + gates).
 - CI: native tests, wasm tests, Playwright, benches, fuzz, docs.
-- 3 example apps (`showcase`, `dashboard`, `blog`) + 12 total examples.
+- 3 example apps (`showcase`, `dashboard`, `blog`) + 13 total examples.
+- `examples/realworld`: persistent task board demo (public API only).
+- GitHub Pages docs + demo, release/publish/CodeQL/Dependabot workflows.
+- `GOVERNANCE.md`, `SUPPORT.md`, `deny.toml`, clippy gate.
 
 ### Known limitations
 
