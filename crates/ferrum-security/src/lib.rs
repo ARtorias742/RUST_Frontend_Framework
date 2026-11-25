@@ -150,6 +150,20 @@ pub fn escape_attr(input: &str) -> String {
     out
 }
 
+/// Decode the entities the sanitizer itself emits, so re-sanitising is
+/// idempotent (`&gt;` stays `&gt;`, not `&amp;gt;`).
+fn unescape_basic(input: &str) -> String {
+    if !input.contains('&') {
+        return input.to_string();
+    }
+    input
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&quot;", "\"")
+        .replace("&#39;", "'")
+        .replace("&amp;", "&")
+}
+
 fn is_safe_url(value: &str) -> bool {
     let v = value.trim();
     let lower = v.to_ascii_lowercase();
@@ -179,7 +193,7 @@ pub fn sanitize_html(input: &str, policy: &Policy) -> String {
             while i < bytes.len() && bytes[i] != b'<' {
                 i += 1;
             }
-            out.push_str(&escape_text(&input[start..i]));
+            out.push_str(&escape_text(&unescape_basic(&input[start..i])));
             continue;
         }
 
@@ -256,7 +270,7 @@ pub fn sanitize_html(input: &str, policy: &Policy) -> String {
                 out.push(' ');
                 out.push_str(&name);
                 out.push_str("=\"");
-                out.push_str(&escape_attr(&value));
+                out.push_str(&escape_attr(&unescape_basic(&value)));
                 out.push('"');
             }
             if self_closing {
@@ -504,6 +518,13 @@ mod tests {
         // Fuzz-found byte sequence (invalid UTF-8 -> lossy replacement).
         let lossy = String::from_utf8_lossy(&[2, 38, 184, 2]);
         let _ = sanitize_html(&lossy, &Policy::strict());
+    }
+
+    #[test]
+    fn sanitizer_is_idempotent_on_entities() {
+        let once = sanitize_html(">\u{b}", &Policy::strict());
+        let twice = sanitize_html(&once, &Policy::strict());
+        assert_eq!(once, twice);
     }
 
     #[test]

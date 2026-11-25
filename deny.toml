@@ -15,7 +15,7 @@ multiple-versions = "warn"
 wildcards = "deny"
 
 [advisories]
-vulnerability = "deny"
+vulnerabilities = "deny"
 unmaintained = "none"
 yanked = "deny"
 ignore = []
