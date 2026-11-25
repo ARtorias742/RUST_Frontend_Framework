@@ -1,0 +1,32 @@
+{
+  "Ferrum component": {
+    "prefix": "ferrum-component",
+    "body": [
+      "#[component]",
+      "fn ${1:Name}(${2:props}) -> VNode {",
+      "    rsx! {",
+      "        div {",
+      "            ${0}",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "A Ferrum component"
+  },
+  "rsx element": {
+    "prefix": "ferrum-rsx",
+    "body": ["rsx! {", "    ${1:div} {", "        ${0}",
+      "    }", "}"],
+    "description": "An rsx! tree"
+  },
+  "useState": {
+    "prefix": "ferrum-use-state",
+    "body": ["let (${1:value}, ${2:set}) = use_state(|| ${3:0});"],
+    "description": "useState"
+  },
+  "useEffect": {
+    "prefix": "ferrum-use-effect",
+    "body": ["use_effect(move || {", "    ${0}", "    None", "}, None::<&[u8]>);"],
+    "description": "useEffect"
+  }
+}

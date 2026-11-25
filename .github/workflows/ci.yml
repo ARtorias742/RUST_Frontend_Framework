@@ -118,6 +118,34 @@ jobs:
         working-directory: fuzz
         run: cargo fuzz run reconciler -- -max_total_time=60
 
+  website:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build Next.js site
+        working-directory: website-next
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+
+  vscode:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Typecheck + package extension
+        working-directory: vscode-extension
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          npm run package
+
   docs:
     runs-on: ubuntu-latest
     steps:

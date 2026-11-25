@@ -30,6 +30,9 @@ First public alpha. The architecture is in place; the API is not stable.
 - 3 example apps (`showcase`, `dashboard`, `blog`) + 13 total examples.
 - `examples/realworld`: persistent task board demo (public API only).
 - GitHub Pages docs + demo, release/publish/CodeQL/Dependabot workflows.
+- `website-next`: Next.js 14 + Tailwind + shadcn/ui + Framer Motion site.
+- `vscode-extension`: commands, snippets, rsx! highlighting, `.vsix` package.
+- `scripts/install.sh` CLI installer; local release artifacts in `dist/`.
 - `GOVERNANCE.md`, `SUPPORT.md`, `deny.toml`, clippy gate.
 
 ### Known limitations

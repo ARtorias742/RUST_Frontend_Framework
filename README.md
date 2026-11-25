@@ -28,6 +28,22 @@ alternative to JS-first frameworks — not a React clone.
 | API stability | **None** — 0.1 alpha |
 | Bundle | 192 KB gzip demo (core 181 KB; alpha budget 200 KB; 1.0 target 150 KB) |
 
+## Install
+
+The crates are not on crates.io yet. Three options:
+
+```bash
+# 1. CLI from source (scaffold, dev server, build, release)
+scripts/install.sh
+# or: cargo install --git https://github.com/ferrum-rs/ferrum --bin ferrum --locked
+
+# 2. VS Code extension: download the .vsix from Releases,
+#    then Extensions → ⋯ → Install from VSIX
+
+# 3. Cargo (once 0.1 is published)
+cargo add ferrum
+```
+
 ## Quickstart
 
 The published crates are not on crates.io yet, so use the workspace examples:
@@ -67,6 +83,28 @@ More examples: `examples/counter`, `todo`, `form`, `hooks`, `spa`, `ssr`,
 
 The live alpha demo (task board with `localStorage`) and the docs site are
 deployed from `main` to GitHub Pages: `/demo/` and `/docs/`.
+
+## Website
+
+The marketing site is a Next.js 14 + Tailwind + shadcn/ui + Framer Motion app:
+
+```bash
+cd website-next
+npm install
+npm run dev      # http://localhost:3000
+```
+
+## VS Code extension
+
+```bash
+cd vscode-extension
+npm install
+npm run build
+npm run package  # -> ferrum-0.1.0.vsix
+```
+
+Install the VSIX from the Extensions panel, or
+`code --install-extension ferrum-0.1.0.vsix`.
 
 ## Architecture
 
@@ -135,6 +173,19 @@ See [CONTRIBUTING.md](CONTRIBUTING.md),
 [GOVERNANCE.md](GOVERNANCE.md), [SUPPORT.md](SUPPORT.md), and
 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Security reports:
 [SECURITY.md](SECURITY.md).
+
+## Release
+
+```bash
+scripts/alpha-check.sh
+# build wasm + SBOM + checksums into dist/
+git tag -a v0.1.0-alpha -m "Ferrum 0.1.0-alpha"
+git push origin main --follow-tags
+```
+
+Pushing the tag triggers `.github/workflows/release.yml` (GitHub release,
+SBOM, checksums). Publishing to crates.io is a separate workflow that needs
+`CARGO_REGISTRY_TOKEN`.
 
 ## License
 

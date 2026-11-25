@@ -14,3 +14,15 @@ fuzz/Cargo.lock
 .vscode/
 .idea/
 *.swp
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+npm-debug.log*
+
+# VS Code extension
+*.vsix
+
+# Release artifacts
+dist/

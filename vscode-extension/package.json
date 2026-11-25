@@ -1,0 +1,113 @@
+{
+  "name": "ferrum",
+  "displayName": "Ferrum",
+  "description": "Ferrum language support: commands, snippets and rsx! highlighting for the Rust frontend framework.",
+  "version": "0.1.0",
+  "publisher": "ferrum-rs",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ferrum-rs/ferrum"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "rust",
+    "wasm",
+    "frontend",
+    "rsx"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:rust",
+    "onCommand:ferrum.dev",
+    "onCommand:ferrum.build",
+    "onCommand:ferrum.check",
+    "onCommand:ferrum.new",
+    "onCommand:ferrum.openDocs",
+    "onCommand:ferrum.openDemo",
+    "onCommand:ferrum.showPanel"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "ferrum.dev",
+        "title": "Ferrum: Start dev server (HMR)"
+      },
+      {
+        "command": "ferrum.build",
+        "title": "Ferrum: Build for wasm (release)"
+      },
+      {
+        "command": "ferrum.check",
+        "title": "Ferrum: Check for wasm"
+      },
+      {
+        "command": "ferrum.new",
+        "title": "Ferrum: New app from template"
+      },
+      {
+        "command": "ferrum.openDocs",
+        "title": "Ferrum: Open documentation"
+      },
+      {
+        "command": "ferrum.openDemo",
+        "title": "Ferrum: Open live demo"
+      },
+      {
+        "command": "ferrum.showPanel",
+        "title": "Ferrum: Show panel"
+      }
+    ],
+    "configuration": {
+      "title": "Ferrum",
+      "properties": {
+        "ferrum.cliPath": {
+          "type": "string",
+          "default": "ferrum",
+          "description": "Path to the ferrum CLI binary."
+        },
+        "ferrum.devPort": {
+          "type": "number",
+          "default": 8080,
+          "description": "Port for `ferrum dev`."
+        }
+      }
+    },
+    "snippets": [
+      {
+        "language": "rust",
+        "path": "./snippets/ferrum.json"
+      }
+    ],
+    "grammars": [
+      {
+        "injectTo": [
+          "source.rust"
+        ],
+        "scopeName": "source.ferrum.injection",
+        "path": "./syntaxes/ferrum.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "watch": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --watch",
+    "typecheck": "tsc --noEmit",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "20.17.6",
+    "@types/vscode": "1.90.0",
+    "@vscode/vsce": "3.1.0",
+    "esbuild": "0.24.0",
+    "typescript": "5.6.3"
+  }
+}

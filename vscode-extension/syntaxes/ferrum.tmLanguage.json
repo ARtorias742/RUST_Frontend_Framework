@@ -1,0 +1,39 @@
+{
+  "scopeName": "source.ferrum.injection",
+  "injectionSelector": "L:source.rust",
+  "patterns": [
+    {
+      "include": "#ferrum-component"
+    },
+    {
+      "include": "#ferrum-rsx"
+    },
+    {
+      "include": "#ferrum-hooks"
+    }
+  ],
+  "repository": {
+    "ferrum-component": {
+      "match": "(#\\[component\\])",
+      "name": "meta.attribute.rust.ferrum",
+      "captures": {
+        "1": {
+          "name": "keyword.control.rust.ferrum"
+        }
+      }
+    },
+    "ferrum-rsx": {
+      "match": "\\b(rsx!)\\b",
+      "name": "keyword.macro.rust.ferrum",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.macro.rust.ferrum"
+        }
+      }
+    },
+    "ferrum-hooks": {
+      "match": "\\b(use_state|use_effect|use_effect_every|use_memo|use_callback|use_ref|use_reducer|use_context|use_id|use_custom_rc)\\b",
+      "name": "support.function.rust.ferrum"
+    }
+  }
+}
