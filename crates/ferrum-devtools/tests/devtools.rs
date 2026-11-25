@@ -220,7 +220,9 @@ fn recording_can_be_paused_and_cleared() {
     r.fire("click", 0);
     r.re_render();
     assert!(
-        !dt.timeline().iter().any(|e| e.kind == TimelineKind::StateSet),
+        !dt.timeline()
+            .iter()
+            .any(|e| e.kind == TimelineKind::StateSet),
         "paused recording must not capture state sets"
     );
 

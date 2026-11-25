@@ -1,9 +1,7 @@
 //! Community app #2: a small analytics dashboard with a data table and
 //! progress meters. Demonstrates the component library without a router.
 
-use ferrum_components::{
-    Badge, Button, Card, Progress, Table, ThemeRoot,
-};
+use ferrum_components::{Badge, Button, Card, Progress, Table, ThemeRoot};
 use ferrum_core::{component, rsx, use_state};
 use ferrum_styling::Theme;
 use ferrum_web::AppHandle;

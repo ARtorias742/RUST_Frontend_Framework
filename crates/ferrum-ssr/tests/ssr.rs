@@ -8,10 +8,7 @@ fn renders_elements_text_and_escapes() {
     let html = render_to_string(&rsx! {
         div { class: "a", "<script> & \"q\"" }
     });
-    assert_eq!(
-        html,
-        "<div class=\"a\">&lt;script&gt; &amp; \"q\"</div>"
-    );
+    assert_eq!(html, "<div class=\"a\">&lt;script&gt; &amp; \"q\"</div>");
 }
 
 #[test]
@@ -47,12 +44,7 @@ fn renders_context_providers() {
         rsx! { p { "{value}" } }
     }
 
-    let tree = CTX.with(|c| {
-        c.provider(
-            "dark".to_string(),
-            vec![rsx! { Reader {} }],
-        )
-    });
+    let tree = CTX.with(|c| c.provider("dark".to_string(), vec![rsx! { Reader {} }]));
     assert_eq!(render_to_string(&tree), "<p>dark</p>");
 }
 
@@ -75,10 +67,8 @@ fn document_includes_title_and_scoped_styles() {
 
 #[test]
 fn stream_writes_flushed_chunks() {
-    let tree = ferrum_core::VNode::fragment(vec![
-        rsx! { section { "one" } },
-        rsx! { section { "two" } },
-    ]);
+    let tree =
+        ferrum_core::VNode::fragment(vec![rsx! { section { "one" } }, rsx! { section { "two" } }]);
     let chunks = render_chunks(&tree);
     assert_eq!(chunks.len(), 2);
     assert!(chunks[0].contains("one"));

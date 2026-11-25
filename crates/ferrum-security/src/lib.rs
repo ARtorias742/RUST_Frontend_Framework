@@ -34,9 +34,36 @@ impl Policy {
     pub fn strict() -> Self {
         Policy {
             tags: &[
-                "a", "b", "blockquote", "br", "code", "div", "em", "h1", "h2", "h3", "h4", "h5",
-                "h6", "hr", "i", "li", "ol", "p", "pre", "span", "strong", "sub", "sup", "table",
-                "tbody", "td", "th", "thead", "tr", "ul",
+                "a",
+                "b",
+                "blockquote",
+                "br",
+                "code",
+                "div",
+                "em",
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "hr",
+                "i",
+                "li",
+                "ol",
+                "p",
+                "pre",
+                "span",
+                "strong",
+                "sub",
+                "sup",
+                "table",
+                "tbody",
+                "td",
+                "th",
+                "thead",
+                "tr",
+                "ul",
             ],
             attrs: &["href", "title", "class", "id", "colspan", "rowspan"],
             allow_links: true,
@@ -47,11 +74,41 @@ impl Policy {
     pub fn with_images() -> Self {
         let mut p = Self::strict();
         p.tags = &[
-            "a", "b", "blockquote", "br", "code", "div", "em", "h1", "h2", "h3", "h4", "h5",
-            "h6", "hr", "i", "img", "li", "ol", "p", "pre", "span", "strong", "sub", "sup",
-            "table", "tbody", "td", "th", "thead", "tr", "ul",
+            "a",
+            "b",
+            "blockquote",
+            "br",
+            "code",
+            "div",
+            "em",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "hr",
+            "i",
+            "img",
+            "li",
+            "ol",
+            "p",
+            "pre",
+            "span",
+            "strong",
+            "sub",
+            "sup",
+            "table",
+            "tbody",
+            "td",
+            "th",
+            "thead",
+            "tr",
+            "ul",
         ];
-        p.attrs = &["href", "src", "alt", "title", "class", "id", "colspan", "rowspan"];
+        p.attrs = &[
+            "href", "src", "alt", "title", "class", "id", "colspan", "rowspan",
+        ];
         p
     }
 
@@ -146,9 +203,7 @@ pub fn sanitize_html(input: &str, policy: &Policy) -> String {
             j += 1;
         }
         let name_start = j;
-        while j < bytes.len()
-            && (bytes[j].is_ascii_alphanumeric() || bytes[j] == b'-')
-        {
+        while j < bytes.len() && (bytes[j].is_ascii_alphanumeric() || bytes[j] == b'-') {
             j += 1;
         }
         if j == name_start {
@@ -164,7 +219,11 @@ pub fn sanitize_html(input: &str, policy: &Policy) -> String {
         let inside = &input[j..tag_end];
 
         if !policy.allows_tag(tag) {
-            i = if tag_end < bytes.len() { tag_end + 1 } else { bytes.len() };
+            i = if tag_end < bytes.len() {
+                tag_end + 1
+            } else {
+                bytes.len()
+            };
             // Drop the body of raw-text elements entirely.
             if !closing && is_raw_text(tag) {
                 i = skip_element(input, i, tag);
@@ -180,9 +239,7 @@ pub fn sanitize_html(input: &str, policy: &Policy) -> String {
             out.push('<');
             out.push_str(tag);
             for (name, value) in parse_attrs(inside) {
-                if name.eq_ignore_ascii_case("on")
-                    || name.to_ascii_lowercase().starts_with("on")
-                {
+                if name.eq_ignore_ascii_case("on") || name.to_ascii_lowercase().starts_with("on") {
                     continue;
                 }
                 if !policy.allows_attr(&name) {
@@ -207,13 +264,20 @@ pub fn sanitize_html(input: &str, policy: &Policy) -> String {
                 out.push('>');
             }
         }
-        i = if tag_end < bytes.len() { tag_end + 1 } else { bytes.len() };
+        i = if tag_end < bytes.len() {
+            tag_end + 1
+        } else {
+            bytes.len()
+        };
     }
     out
 }
 
 fn is_raw_text(tag: &str) -> bool {
-    matches!(tag.to_ascii_lowercase().as_str(), "script" | "style" | "iframe" | "object" | "embed")
+    matches!(
+        tag.to_ascii_lowercase().as_str(),
+        "script" | "style" | "iframe" | "object" | "embed"
+    )
 }
 
 fn skip_to_gt(bytes: &[u8], mut i: usize) -> usize {
@@ -306,10 +370,7 @@ fn parse_attrs(input: &str) -> Vec<(String, String)> {
                 }
             } else {
                 let start = i;
-                while i < bytes.len()
-                    && !bytes[i].is_ascii_whitespace()
-                    && bytes[i] != b'>'
-                {
+                while i < bytes.len() && !bytes[i].is_ascii_whitespace() && bytes[i] != b'>' {
                     i += 1;
                 }
                 value = input[start..i].to_string();
@@ -334,7 +395,10 @@ pub struct Csp {
 
 impl Csp {
     pub fn new(nonce: impl Into<String>) -> Self {
-        Csp { nonce: nonce.into(), inline_styles: true }
+        Csp {
+            nonce: nonce.into(),
+            inline_styles: true,
+        }
     }
 
     /// A fresh random-ish nonce (time + address entropy; no `rand` dependency).

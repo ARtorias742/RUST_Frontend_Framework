@@ -50,7 +50,11 @@ pub struct Version {
 
 impl Version {
     pub const fn new(major: u64, minor: u64, patch: u64) -> Self {
-        Version { major, minor, patch }
+        Version {
+            major,
+            minor,
+            patch,
+        }
     }
 
     pub fn is_zero(&self) -> bool {
@@ -81,10 +85,17 @@ impl FromStr for Version {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let parts: Vec<&str> = s.split('.').collect();
-        if parts.len() != 3 || parts.iter().any(|p| p.is_empty() || !p.chars().all(|c| c.is_ascii_digit())) {
+        if parts.len() != 3
+            || parts
+                .iter()
+                .any(|p| p.is_empty() || !p.chars().all(|c| c.is_ascii_digit()))
+        {
             return Err(ParseVersionError(s.to_string()));
         }
-        let parse = |p: &str| p.parse::<u64>().map_err(|_| ParseVersionError(s.to_string()));
+        let parse = |p: &str| {
+            p.parse::<u64>()
+                .map_err(|_| ParseVersionError(s.to_string()))
+        };
         Ok(Version {
             major: parse(parts[0])?,
             minor: parse(parts[1])?,
@@ -251,7 +262,11 @@ pub enum Change {
     Removed(String),
     Deprecated(String),
     Recategorized(String),
-    VersionChanged { name: String, from: Version, to: Version },
+    VersionChanged {
+        name: String,
+        from: Version,
+        to: Version,
+    },
 }
 
 impl Change {
@@ -271,7 +286,10 @@ impl Change {
     }
 
     pub fn is_minor(&self) -> bool {
-        matches!(self, Change::Added(_) | Change::Deprecated(_) | Change::Recategorized(_))
+        matches!(
+            self,
+            Change::Added(_) | Change::Deprecated(_) | Change::Recategorized(_)
+        )
     }
 }
 
@@ -311,8 +329,14 @@ mod tests {
         let mut r = Registry::new();
         r.register("X", Version::new(1, 0, 0), "misc");
         r.deprecate("X", Version::new(1, 1, 0), "gone soon");
-        assert_eq!(r.get("X").unwrap().deprecation.since(), Some(Version::new(1, 1, 0)));
+        assert_eq!(
+            r.get("X").unwrap().deprecation.since(),
+            Some(Version::new(1, 1, 0))
+        );
         r.remove("X", Version::new(2, 0, 0));
-        assert!(matches!(r.get("X").unwrap().deprecation, Deprecation::Removed { .. }));
+        assert!(matches!(
+            r.get("X").unwrap().deprecation,
+            Deprecation::Removed { .. }
+        ));
     }
 }

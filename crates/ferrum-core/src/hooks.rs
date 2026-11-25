@@ -275,9 +275,9 @@ pub fn flush_effects(effects: &EffectQueue) {
             let hooks = job.instance.hooks.borrow();
             match &hooks[job.idx] {
                 HookSlot::Effect { last_deps, .. } => match (&job.deps, last_deps) {
-                    (None, _) => true,                       // no deps: every render
-                    (Some(d), Some(prev)) => d != prev,      // deps changed
-                    (Some(_), None) => true,                 // first run
+                    (None, _) => true,                  // no deps: every render
+                    (Some(d), Some(prev)) => d != prev, // deps changed
+                    (Some(_), None) => true,            // first run
                 },
                 _ => true,
             }
@@ -370,9 +370,7 @@ impl<T: Clone + 'static> StateSetter<T> {
 }
 
 /// `useState`: returns `(value, setter)`. `T: Clone`.
-pub fn use_state<T: Clone + 'static>(
-    init: impl FnOnce() -> T,
-) -> (T, StateSetter<T>) {
+pub fn use_state<T: Clone + 'static>(init: impl FnOnce() -> T) -> (T, StateSetter<T>) {
     let ctx = current_ctx();
     let idx = ctx.next_slot();
     let missing = ctx.with_slot_mut(idx, |slot| matches!(slot, HookSlot::Empty));
@@ -384,11 +382,14 @@ pub fn use_state<T: Clone + 'static>(
     let value = ctx
         .with_slot_mut(idx, |slot| slot.downcast_ref::<T>().cloned())
         .expect("use_state: slot type mismatch");
-    (value, StateSetter {
-        ctx,
-        idx,
-        _t: std::marker::PhantomData,
-    })
+    (
+        value,
+        StateSetter {
+            ctx,
+            idx,
+            _t: std::marker::PhantomData,
+        },
+    )
 }
 
 /// `useEffect`: run `f` after commit; return its cleanup. `deps = None`
@@ -432,10 +433,7 @@ pub fn use_memo<T: 'static, D: Hash>(deps: &[D], f: impl FnOnce() -> T) -> Rc<T>
     if !reuse {
         let value: Rc<T> = Rc::new(f());
         ctx.with_slot_mut(idx, |slot| {
-            *slot = HookSlot::Memo {
-                deps,
-                value,
-            };
+            *slot = HookSlot::Memo { deps, value };
         });
     }
     ctx.with_slot_mut(idx, |slot| match slot {
@@ -450,9 +448,10 @@ pub fn use_callback<T: 'static, D: Hash>(deps: &[D], f: T) -> Rc<T> {
     let ctx = current_ctx();
     let idx = ctx.next_slot();
     let deps: Vec<u64> = deps.iter().map(hash_one).collect();
-    let reuse = ctx.with_slot_mut(idx, |slot| {
-        matches!(slot, HookSlot::Memo { deps: d, .. } if d == &deps)
-    });
+    let reuse = ctx.with_slot_mut(
+        idx,
+        |slot| matches!(slot, HookSlot::Memo { deps: d, .. } if d == &deps),
+    );
     if !reuse {
         let value: Rc<T> = Rc::new(f);
         ctx.with_slot_mut(idx, |slot| {
@@ -496,10 +495,7 @@ impl<A: 'static> ReducerDispatch<A> {
 }
 
 /// `useReducer`: returns `(state, dispatch)`.
-pub fn use_reducer<S, A>(
-    reducer: impl Fn(&S, A) -> S + 'static,
-    init: S,
-) -> (S, ReducerDispatch<A>)
+pub fn use_reducer<S, A>(reducer: impl Fn(&S, A) -> S + 'static, init: S) -> (S, ReducerDispatch<A>)
 where
     S: Clone + 'static,
     A: 'static,

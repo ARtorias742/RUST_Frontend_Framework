@@ -169,7 +169,13 @@ impl DevTools {
 
     // -- recording -----------------------------------------------------------
 
-    fn push_timeline(&self, kind: TimelineKind, component: Option<u64>, name: Option<&'static str>, detail: String) {
+    fn push_timeline(
+        &self,
+        kind: TimelineKind,
+        component: Option<u64>,
+        name: Option<&'static str>,
+        detail: String,
+    ) {
         let mut inner = self.0.borrow_mut();
         if !inner.recording {
             return;
@@ -190,7 +196,13 @@ impl DevTools {
         }
     }
 
-    pub(crate) fn record_mount(&self, id: u64, name: &'static str, parent: Option<u64>, hooks: &[HookInfo]) {
+    pub(crate) fn record_mount(
+        &self,
+        id: u64,
+        name: &'static str,
+        parent: Option<u64>,
+        hooks: &[HookInfo],
+    ) {
         {
             let mut inner = self.0.borrow_mut();
             if !inner.recording {
@@ -215,7 +227,12 @@ impl DevTools {
                 }
             }
         }
-        self.push_timeline(TimelineKind::Mount, Some(id), Some(name), format!("{} mounted", name));
+        self.push_timeline(
+            TimelineKind::Mount,
+            Some(id),
+            Some(name),
+            format!("{} mounted", name),
+        );
     }
 
     pub(crate) fn record_render(&self, id: u64, name: &'static str, hooks: &[HookInfo]) {
@@ -229,7 +246,12 @@ impl DevTools {
                 inner.components[i].hooks = hooks.to_vec();
             }
         }
-        self.push_timeline(TimelineKind::Render, Some(id), Some(name), format!("{} rendered", name));
+        self.push_timeline(
+            TimelineKind::Render,
+            Some(id),
+            Some(name),
+            format!("{} rendered", name),
+        );
     }
 
     pub(crate) fn record_unmount(&self, id: u64, name: &'static str) {
@@ -242,12 +264,22 @@ impl DevTools {
                 inner.components[i].mounted = false;
             }
         }
-        self.push_timeline(TimelineKind::Unmount, Some(id), Some(name), format!("{} unmounted", name));
+        self.push_timeline(
+            TimelineKind::Unmount,
+            Some(id),
+            Some(name),
+            format!("{} unmounted", name),
+        );
     }
 
     pub(crate) fn record_hook(&self, event: HookEvent) {
         match event {
-            HookEvent::StateSet { instance, name, slot, value } => {
+            HookEvent::StateSet {
+                instance,
+                name,
+                slot,
+                value,
+            } => {
                 self.push_timeline(
                     TimelineKind::StateSet,
                     Some(instance),
@@ -255,7 +287,11 @@ impl DevTools {
                     format!("{} set hook #{} -> {}", name, slot, value),
                 );
             }
-            HookEvent::ReducerDispatch { instance, name, slot } => {
+            HookEvent::ReducerDispatch {
+                instance,
+                name,
+                slot,
+            } => {
                 self.push_timeline(
                     TimelineKind::ReducerDispatch,
                     Some(instance),
@@ -291,7 +327,11 @@ impl DevTools {
             RequestPhase::Start => (TimelineKind::RequestStart, format!("GET {}", record.key)),
             RequestPhase::Success => (
                 TimelineKind::RequestSuccess,
-                format!("GET {} -> 200 ({}ms)", record.key, record.duration_ms.unwrap_or(0)),
+                format!(
+                    "GET {} -> 200 ({}ms)",
+                    record.key,
+                    record.duration_ms.unwrap_or(0)
+                ),
             ),
             RequestPhase::Error => (
                 TimelineKind::RequestError,
@@ -464,7 +504,13 @@ thread_local! {
 struct ReconcilerBridge(Rc<DevTools>);
 
 impl Observer for ReconcilerBridge {
-    fn component_mount(&self, id: u64, name: &'static str, parent: Option<u64>, hooks: &[HookInfo]) {
+    fn component_mount(
+        &self,
+        id: u64,
+        name: &'static str,
+        parent: Option<u64>,
+        hooks: &[HookInfo],
+    ) {
         self.0.record_mount(id, name, parent, hooks);
     }
     fn component_render(&self, id: u64, name: &'static str, hooks: &[HookInfo]) {
@@ -565,7 +611,11 @@ pub fn overlay() -> VNode {
                     format!("✓ GET {} {}ms", entry.key, entry.duration_ms.unwrap_or(0))
                 }
                 RequestPhase::Error => {
-                    format!("✗ GET {} {}", entry.key, entry.error.clone().unwrap_or_default())
+                    format!(
+                        "✗ GET {} {}",
+                        entry.key,
+                        entry.error.clone().unwrap_or_default()
+                    )
                 }
             };
             rows.push(ferrum_core::rsx! { div { style: dim, "{text}" } });
@@ -575,7 +625,12 @@ pub fn overlay() -> VNode {
     if !snapshot.timeline.is_empty() {
         rows.push(ferrum_core::rsx! { div { style: head, "Timeline" } });
         for entry in snapshot.timeline.iter().rev().take(10) {
-            let text = format!("{:>5}ms  {:<10} {}", entry.at_ms, entry.kind.as_str(), entry.detail);
+            let text = format!(
+                "{:>5}ms  {:<10} {}",
+                entry.at_ms,
+                entry.kind.as_str(),
+                entry.detail
+            );
             rows.push(ferrum_core::rsx! { div { style: dim, "{text}" } });
         }
     }
@@ -598,7 +653,11 @@ fn push_tree_row(rows: &mut Vec<VNode>, node: &ComponentNode, depth: usize) {
         node.record.name,
         node.record.id,
         node.record.renders,
-        if hooks.is_empty() { String::new() } else { format!("  [{}]", hooks) }
+        if hooks.is_empty() {
+            String::new()
+        } else {
+            format!("  [{}]", hooks)
+        }
     );
     rows.push(ferrum_core::rsx! { div { "{text}" } });
     for child in &node.children {

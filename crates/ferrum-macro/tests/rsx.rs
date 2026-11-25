@@ -44,8 +44,14 @@ fn element_basic() {
 fn element_with_attrs() {
     let v = rsx! { div { class: "app", id: "root", hidden: true } };
     let e = el(&v);
-    assert_eq!(e.attrs[0], ("class".to_string(), AttrValue::Str("app".into())));
-    assert_eq!(e.attrs[1], ("id".to_string(), AttrValue::Str("root".into())));
+    assert_eq!(
+        e.attrs[0],
+        ("class".to_string(), AttrValue::Str("app".into()))
+    );
+    assert_eq!(
+        e.attrs[1],
+        ("id".to_string(), AttrValue::Str("root".into()))
+    );
     assert_eq!(e.attrs[2], ("hidden".to_string(), AttrValue::Bool(true)));
 }
 

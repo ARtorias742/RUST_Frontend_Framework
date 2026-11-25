@@ -41,7 +41,12 @@ fn stylesheet_contains_registered_rules() {
 fn button_renders_scoped_classes() {
     reset_registry();
     let r = TestRenderer::new();
-    r.render(|| themed(Theme::light(), rsx! { Button { variant: "primary", on_click: None, "Click" } }));
+    r.render(|| {
+        themed(
+            Theme::light(),
+            rsx! { Button { variant: "primary", on_click: None, "Click" } },
+        )
+    });
     let html = r.html();
     assert!(html.contains("<button"), "{html}");
     assert!(html.contains("class=\"f"), "scoped class missing: {html}");
@@ -85,20 +90,32 @@ fn theme_switch_rerenders_tokens() {
     let r = TestRenderer::new();
     let d2 = dark.clone();
     r.render(move || {
-        let theme = if d2.get() { Theme::dark() } else { Theme::light() };
+        let theme = if d2.get() {
+            Theme::dark()
+        } else {
+            Theme::light()
+        };
         themed(theme, rsx! { ThemedCard {} })
     });
     assert!(r.html().contains("--bg: #111827"));
     dark.set(false);
     r.re_render();
-    assert!(r.html().contains("--bg: #ffffff"), "theme switched without remount");
+    assert!(
+        r.html().contains("--bg: #ffffff"),
+        "theme switched without remount"
+    );
 }
 
 #[test]
 fn card_and_badge_render() {
     reset_registry();
     let r = TestRenderer::new();
-    r.render(|| themed(Theme::light(), rsx! { Card { title: "T", Badge { label: "b" } } }));
+    r.render(|| {
+        themed(
+            Theme::light(),
+            rsx! { Card { title: "T", Badge { label: "b" } } },
+        )
+    });
     let html = r.html();
     assert!(html.contains("<h2"));
     assert!(html.contains("T"));
@@ -110,7 +127,12 @@ fn card_and_badge_render() {
 fn component_library_snapshot() {
     reset_registry();
     let r = TestRenderer::new();
-    r.render(|| themed(Theme::light(), rsx! { Button { variant: "ghost", on_click: None, "Hi" } }));
+    r.render(|| {
+        themed(
+            Theme::light(),
+            rsx! { Button { variant: "ghost", on_click: None, "Hi" } },
+        )
+    });
     let html = r.html();
     assert!(html.contains("<div style=\"--bg: #ffffff"), "{html}");
     assert!(html.contains("dir=\"ltr\""));

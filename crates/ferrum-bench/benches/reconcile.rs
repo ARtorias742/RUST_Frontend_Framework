@@ -48,5 +48,8 @@ fn main() {
         per_update,
         1000.0 / per_update
     );
-    assert!(per_update < 16.6, "reconcile budget exceeded: {per_update:.3} ms");
+    assert!(
+        per_update < 16.6,
+        "reconcile budget exceeded: {per_update:.3} ms"
+    );
 }

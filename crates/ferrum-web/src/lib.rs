@@ -100,7 +100,12 @@ impl Renderer for WebBackend {
         parent.replace_child(new, old).ok();
     }
 
-    fn add_listener(&self, node: &Node, name: &str, handler: ferrum_core::EventHandler) -> ListenerHandle {
+    fn add_listener(
+        &self,
+        node: &Node,
+        name: &str,
+        handler: ferrum_core::EventHandler,
+    ) -> ListenerHandle {
         let closure = Closure::<dyn FnMut(Event)>::new(move |ev: Event| {
             let fev = FerrumEvent::new(ev.type_(), Box::new(ev));
             handler(&fev);
@@ -410,7 +415,9 @@ impl AppHandle {
             }
             i.depth += 1;
             let AppInner {
-                renderer, render_fn, ..
+                renderer,
+                render_fn,
+                ..
             } = &mut *i;
             if let Some(f) = render_fn.as_mut() {
                 let vnode = f();

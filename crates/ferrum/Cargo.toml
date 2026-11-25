@@ -1,10 +1,15 @@
 [package]
 name = "ferrum"
-description = "Ferrum: a Rust frontend framework (React-style components, hooks, SSR, native) — 1.0 facade"
+description = "Ferrum: a Rust frontend framework (React-style components, hooks, SSR, native) — 0.1 alpha facade"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+rust-version.workspace = true
+exclude.workspace = true
 
 [dependencies]
 ferrum-core = { workspace = true }
@@ -21,4 +26,6 @@ ferrum-testing = { workspace = true }
 ferrum-devtools = { workspace = true }
 ferrum-security = { workspace = true }
 ferrum-registry = { workspace = true }
+
+[dev-dependencies]
 ferrum-conformance = { workspace = true }

@@ -206,7 +206,12 @@ impl Renderer for HeadlessBackend {
         }
     }
 
-    fn add_listener(&self, node: &HNode, name: &str, handler: ferrum_core::EventHandler) -> ListenerHandle {
+    fn add_listener(
+        &self,
+        node: &HNode,
+        name: &str,
+        handler: ferrum_core::EventHandler,
+    ) -> ListenerHandle {
         let id = next_listener_id();
         if let HNode::Element(e) = node {
             e.listeners
@@ -217,7 +222,10 @@ impl Renderer for HeadlessBackend {
     }
 
     fn remove_listener(&self, node: &HNode, handle: ListenerHandle) {
-        let id = *handle.0.downcast_ref::<u64>().expect("listener handle type");
+        let id = *handle
+            .0
+            .downcast_ref::<u64>()
+            .expect("listener handle type");
         if let HNode::Element(e) = node {
             e.listeners.borrow_mut().retain(|(i, _, _)| *i != id);
         }
@@ -326,7 +334,9 @@ impl TestRenderer {
                 panic!("Ferrum: maximum update depth exceeded (50 nested renders)");
             }
             i.depth += 1;
-            let TestInner { tree, render_fn, .. } = &mut *i;
+            let TestInner {
+                tree, render_fn, ..
+            } = &mut *i;
             if let Some(f) = render_fn.as_mut() {
                 let vnode = f();
                 tree.render(&vnode);
@@ -392,7 +402,12 @@ impl TestRenderer {
     /// Read an attribute/property of an element node.
     pub fn attr(&self, node: &HNode, name: &str) -> Option<AttrValue> {
         if let HNode::Element(e) = node {
-            return e.attrs.borrow().iter().find(|(n, _)| n == name).map(|(_, v)| v.clone());
+            return e
+                .attrs
+                .borrow()
+                .iter()
+                .find(|(n, _)| n == name)
+                .map(|(_, v)| v.clone());
         }
         None
     }
@@ -409,7 +424,11 @@ impl Default for TestRenderer {
     }
 }
 
-fn collect_listeners_rec(node: &HNode, event: &str, out: &mut Vec<(HNode, ferrum_core::EventHandler)>) {
+fn collect_listeners_rec(
+    node: &HNode,
+    event: &str,
+    out: &mut Vec<(HNode, ferrum_core::EventHandler)>,
+) {
     if let HNode::Element(e) = node {
         for (_, name, handler) in e.listeners.borrow().iter() {
             if name == event || name.strip_prefix("on") == Some(event) {

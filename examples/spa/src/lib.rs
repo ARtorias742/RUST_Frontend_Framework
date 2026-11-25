@@ -29,9 +29,21 @@ async fn fetch_user(id: u32) -> Result<(String, String), String> {
 
 fn users() -> Vec<User> {
     vec![
-        User { id: 1, name: "Ada".into(), role: "Engineer".into() },
-        User { id: 2, name: "Bob".into(), role: "Designer".into() },
-        User { id: 3, name: "Clara".into(), role: "PM".into() },
+        User {
+            id: 1,
+            name: "Ada".into(),
+            role: "Engineer".into(),
+        },
+        User {
+            id: 2,
+            name: "Bob".into(),
+            role: "Designer".into(),
+        },
+        User {
+            id: 3,
+            name: "Clara".into(),
+            role: "PM".into(),
+        },
     ]
 }
 
@@ -58,7 +70,9 @@ struct UsersPage;
 impl RouteTarget for UsersPage {
     fn render(&self, _p: &Params, _o: VNode) -> VNode {
         let client = client();
-        match use_query(&client, "users", || async { Ok::<Vec<User>, String>(users()) }) {
+        match use_query(&client, "users", || async {
+            Ok::<Vec<User>, String>(users())
+        }) {
             QuerySnapshot::Loading => rsx! { p { "Loading users..." } },
             QuerySnapshot::Ok(list) => {
                 let items: Vec<VNode> = list
@@ -147,9 +161,7 @@ pub fn start() {
             .route("/users", UsersPage)
             .route("/users/:id", UserPage)
             .route("/about", About)
-            .nest("/panel", PanelLayout, |r| {
-                r.route("", PanelHome)
-            }),
+            .nest("/panel", PanelLayout, |r| r.route("", PanelHome)),
         history,
     );
 

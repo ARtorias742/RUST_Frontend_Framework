@@ -74,7 +74,12 @@ impl Drop for DevServerHandle {
 /// Start a dev server with the default build command
 /// (`cargo build --target wasm32-unknown-unknown`).
 pub fn start(root: impl AsRef<Path>, port: u16) -> std::io::Result<DevServerHandle> {
-    start_with_build(root, port, "cargo", &["build", "--target", "wasm32-unknown-unknown"])
+    start_with_build(
+        root,
+        port,
+        "cargo",
+        &["build", "--target", "wasm32-unknown-unknown"],
+    )
 }
 
 /// Start a dev server with a custom rebuild command (tests).
@@ -257,7 +262,13 @@ fn sse_stream(stream: &mut TcpStream, events: &EventBus) {
 // Watcher + rebuild
 // ---------------------------------------------------------------------------
 
-fn watch_loop(root: PathBuf, events: EventBus, stop: Arc<AtomicBool>, program: String, args: Vec<String>) {
+fn watch_loop(
+    root: PathBuf,
+    events: EventBus,
+    stop: Arc<AtomicBool>,
+    program: String,
+    args: Vec<String>,
+) {
     let mut snapshot = scan(&root);
     while !stop.load(Ordering::SeqCst) {
         thread::sleep(Duration::from_millis(100));
@@ -271,13 +282,21 @@ fn watch_loop(root: PathBuf, events: EventBus, stop: Arc<AtomicBool>, program: S
             .iter()
             .filter(|(p, v)| snapshot.get(p.as_path()) != Some(*v))
             .map(|(p, _)| p.clone())
-            .chain(snapshot.keys().filter(|p| !current.contains_key(p.as_path())).cloned())
+            .chain(
+                snapshot
+                    .keys()
+                    .filter(|p| !current.contains_key(p.as_path()))
+                    .cloned(),
+            )
             .collect();
         snapshot = scan(&root);
         if changed.is_empty() {
             continue;
         }
-        if changed.iter().all(|p| p.extension().and_then(|e| e.to_str()) == Some("css")) {
+        if changed
+            .iter()
+            .all(|p| p.extension().and_then(|e| e.to_str()) == Some("css"))
+        {
             // CSS-only: no reload — the client cache-busts the link.
             for p in &changed {
                 let name = p
@@ -291,7 +310,10 @@ fn watch_loop(root: PathBuf, events: EventBus, stop: Arc<AtomicBool>, program: S
         }
         // Rebuild.
         let start = Instant::now();
-        let output = std::process::Command::new(&program).args(&args).current_dir(&root).output();
+        let output = std::process::Command::new(&program)
+            .args(&args)
+            .current_dir(&root)
+            .output();
         let ms = start.elapsed().as_millis();
         match output {
             Ok(o) if o.status.success() => {
@@ -299,11 +321,24 @@ fn watch_loop(root: PathBuf, events: EventBus, stop: Arc<AtomicBool>, program: S
             }
             Ok(o) => {
                 let msg = String::from_utf8_lossy(&o.stderr);
-                let tail: String = msg.chars().rev().take(400).collect::<String>().chars().rev().collect();
-                events.broadcast(format!("{{\"type\":\"error\",\"msg\":{}}}", json_escape(&tail)));
+                let tail: String = msg
+                    .chars()
+                    .rev()
+                    .take(400)
+                    .collect::<String>()
+                    .chars()
+                    .rev()
+                    .collect();
+                events.broadcast(format!(
+                    "{{\"type\":\"error\",\"msg\":{}}}",
+                    json_escape(&tail)
+                ));
             }
             Err(e) => {
-                events.broadcast(format!("{{\"type\":\"error\",\"msg\":{}}}", json_escape(&e.to_string())));
+                events.broadcast(format!(
+                    "{{\"type\":\"error\",\"msg\":{}}}",
+                    json_escape(&e.to_string())
+                ));
             }
         }
     }
@@ -313,17 +348,25 @@ fn scan(root: &Path) -> std::collections::HashMap<PathBuf, (u64, u64)> {
     let mut out = std::collections::HashMap::new();
     let mut stack = vec![root.to_path_buf()];
     while let Some(dir) = stack.pop() {
-        let Ok(entries) = fs::read_dir(&dir) else { continue };
+        let Ok(entries) = fs::read_dir(&dir) else {
+            continue;
+        };
         for entry in entries.flatten() {
             let path = entry.path();
             let name = entry.file_name().to_string_lossy().to_string();
-            if matches!(name.as_str(), "target" | "dist" | ".git" | "node_modules") && path.is_dir() {
+            if matches!(name.as_str(), "target" | "dist" | ".git" | "node_modules") && path.is_dir()
+            {
                 continue;
             }
             if path.is_dir() {
                 stack.push(path);
             } else if let Ok(meta) = entry.metadata() {
-                let mtime = meta.modified().ok().and_then(|t| t.duration_since(SystemTime::UNIX_EPOCH).ok()).map(|d| d.as_millis() as u64).unwrap_or(0);
+                let mtime = meta
+                    .modified()
+                    .ok()
+                    .and_then(|t| t.duration_since(SystemTime::UNIX_EPOCH).ok())
+                    .map(|d| d.as_millis() as u64)
+                    .unwrap_or(0);
                 out.insert(path, (mtime, meta.len()));
             }
         }

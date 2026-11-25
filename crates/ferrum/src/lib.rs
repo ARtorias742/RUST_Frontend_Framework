@@ -4,7 +4,7 @@
 //! hooks, a keyed reconciler, SSR/hydration, a native renderer, routing,
 //! data fetching, scoped styling and a 30-component library.
 //!
-//! This crate is the **1.0 facade**: it re-exports every public API so apps
+//! This crate is the **0.1 alpha facade**: it re-exports every public API so apps
 //! can depend on `ferrum` alone. The facade is the stability boundary — the
 //! internal crates may be refactored without breaking users.
 //!
@@ -65,11 +65,8 @@ pub mod prelude {
     pub use ferrum_styling::{css, theme_context, tw, Theme};
 }
 
-/// The crate version (1.0 API freeze).
+/// The crate version (0.1 alpha; the API is not frozen yet).
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
-
-/// The compatibility gate enforced by `ferrum-conformance`.
-pub const CONFORMANCE_GATE: f64 = ferrum_conformance::PASS_RATIO_GATE;
 
 #[cfg(test)]
 mod tests {
@@ -82,8 +79,8 @@ mod tests {
     }
 
     #[test]
-    fn version_is_1_0() {
+    fn version_is_0_1_alpha() {
         assert_eq!(VERSION, "0.1.0");
-        assert!(CONFORMANCE_GATE >= 0.95);
+        assert!(VERSION.starts_with("0.1."));
     }
 }

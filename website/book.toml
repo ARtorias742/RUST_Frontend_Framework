@@ -1,0 +1,10 @@
+[book]
+title = "Ferrum"
+description = "A Rust frontend framework (0.1 alpha)"
+src = "src"
+language = "en"
+
+[output.html]
+default-theme = "rust"
+git-repository-url = "https://github.com/ferrum-rs/ferrum"
+edit-url-template = "https://github.com/ferrum-rs/ferrum/edit/main/website/{path}"

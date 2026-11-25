@@ -19,9 +19,21 @@ struct Post {
 
 fn posts() -> Vec<Post> {
     vec![
-        Post { id: 1, title: "Hello Ferrum", body: "Rust on the frontend." },
-        Post { id: 2, title: "Hooks, explained", body: "State, effects and identity." },
-        Post { id: 3, title: "Hydration", body: "From server HTML to live DOM." },
+        Post {
+            id: 1,
+            title: "Hello Ferrum",
+            body: "Rust on the frontend.",
+        },
+        Post {
+            id: 2,
+            title: "Hooks, explained",
+            body: "State, effects and identity.",
+        },
+        Post {
+            id: 3,
+            title: "Hydration",
+            body: "From server HTML to live DOM.",
+        },
     ]
 }
 
@@ -72,9 +84,7 @@ pub fn start() {
     let document = web_sys::window().unwrap().document().unwrap();
     let root = document.get_element_by_id("app").unwrap();
     let router = Router::new(
-        Rules::new()
-            .route("/", Home)
-            .route("/post/:id", PostPage),
+        Rules::new().route("/", Home).route("/post/:id", PostPage),
         BrowserHistory::new(),
     );
     let app = AppHandle::new(root);

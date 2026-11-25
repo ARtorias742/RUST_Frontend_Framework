@@ -60,7 +60,16 @@ struct User {
 }
 
 async fn fetch_users() -> Result<Vec<User>, String> {
-    Ok(vec![User { id: 1, name: "Ada".into() }, User { id: 2, name: "Bob".into() }])
+    Ok(vec![
+        User {
+            id: 1,
+            name: "Ada".into(),
+        },
+        User {
+            id: 2,
+            name: "Bob".into(),
+        },
+    ])
 }
 
 #[component]
@@ -107,7 +116,9 @@ fn use_query_cache_dedupes_inflight() {
 #[component]
 fn Failing() -> VNode {
     let client = use_context_client();
-    match use_query(&client, "boom", || async { Err::<u32, _>("boom".to_string()) }) {
+    match use_query(&client, "boom", || async {
+        Err::<u32, _>("boom".to_string())
+    }) {
         QuerySnapshot::Loading => rsx! { p { "Loading..." } },
         QuerySnapshot::Ok(_) => rsx! { p { "ok" } },
         QuerySnapshot::Err(e) => rsx! { p { "Error: {e}" } },

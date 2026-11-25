@@ -9,7 +9,12 @@ use std::time::Duration;
 
 fn get(port: u16, path: &str) -> String {
     let mut s = TcpStream::connect(("127.0.0.1", port)).unwrap();
-    write!(s, "GET {} HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n", path).unwrap();
+    write!(
+        s,
+        "GET {} HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n",
+        path
+    )
+    .unwrap();
     let mut buf = Vec::new();
     s.read_to_end(&mut buf).unwrap();
     String::from_utf8_lossy(&buf).to_string()
@@ -17,7 +22,11 @@ fn get(port: u16, path: &str) -> String {
 
 fn sse_connect(port: u16) -> TcpStream {
     let mut s = TcpStream::connect(("127.0.0.1", port)).unwrap();
-    write!(s, "GET /__ferrum/events HTTP/1.1\r\nHost: localhost\r\n\r\n").unwrap();
+    write!(
+        s,
+        "GET /__ferrum/events HTTP/1.1\r\nHost: localhost\r\n\r\n"
+    )
+    .unwrap();
     let mut buf = [0u8; 256];
     let n = s.read(&mut buf).unwrap();
     let head = String::from_utf8_lossy(&buf[..n]);
@@ -50,7 +59,8 @@ fn read_event(s: &mut TcpStream) -> String {
 struct TempDir(std::path::PathBuf);
 impl TempDir {
     fn new(name: &str) -> Self {
-        let p = std::env::temp_dir().join(format!("ferrum-cli-test-{}-{}", name, std::process::id()));
+        let p =
+            std::env::temp_dir().join(format!("ferrum-cli-test-{}-{}", name, std::process::id()));
         let _ = fs::remove_dir_all(&p);
         fs::create_dir_all(&p).unwrap();
         TempDir(p)
@@ -65,13 +75,20 @@ impl Drop for TempDir {
 #[test]
 fn serves_index_with_client_injected() {
     let dir = TempDir::new("index");
-    fs::write(dir.0.join("index.html"), "<html><body><div id=\"app\"></div></body></html>").unwrap();
+    fs::write(
+        dir.0.join("index.html"),
+        "<html><body><div id=\"app\"></div></body></html>",
+    )
+    .unwrap();
     // No-op build command: the rebuild path is exercised separately.
     let handle = start_with_build(&dir.0, 0, "true", &[]).unwrap();
     let body = get(handle.port, "/");
     assert!(body.contains("200 OK"), "{body}");
     assert!(body.contains("<div id=\"app\">"));
-    assert!(body.contains("/@ferrum/client.js"), "client not injected: {body}");
+    assert!(
+        body.contains("/@ferrum/client.js"),
+        "client not injected: {body}"
+    );
 }
 
 #[test]
@@ -80,7 +97,10 @@ fn serves_client_js() {
     let handle = start_with_build(&dir.0, 0, "true", &[]).unwrap();
     let body = get(handle.port, "/@ferrum/client.js");
     assert!(body.contains("EventSource"), "{body}");
-    assert!(body.contains("ferrum-error-overlay"), "error overlay missing");
+    assert!(
+        body.contains("ferrum-error-overlay"),
+        "error overlay missing"
+    );
 }
 
 #[test]
@@ -105,7 +125,10 @@ fn css_change_pushes_css_event_without_reload() {
     std::thread::sleep(Duration::from_millis(300));
     fs::write(dir.0.join("style.css"), "body { color: blue; }").unwrap();
     let event = read_event(&mut sse);
-    assert!(event.contains("\"type\":\"css\""), "expected css event, got: {event}");
+    assert!(
+        event.contains("\"type\":\"css\""),
+        "expected css event, got: {event}"
+    );
     assert!(event.contains("style.css"), "{event}");
 }
 
@@ -119,7 +142,10 @@ fn rs_change_triggers_rebuild_and_reload_event() {
     std::thread::sleep(Duration::from_millis(300));
     fs::write(dir.0.join("src").join("lib.rs"), "fn a() { let _ = 1; }").unwrap();
     let event = read_event(&mut sse);
-    assert!(event.contains("\"type\":\"reload\""), "expected reload event, got: {event}");
+    assert!(
+        event.contains("\"type\":\"reload\""),
+        "expected reload event, got: {event}"
+    );
     assert!(event.contains("\"ms\":"), "rebuild time missing: {event}");
 }
 
@@ -132,7 +158,14 @@ fn failed_rebuild_pushes_error_event() {
     let handle = start_with_build(&dir.0, 0, "false", &[]).unwrap();
     let mut sse = sse_connect(handle.port);
     std::thread::sleep(Duration::from_millis(300));
-    fs::write(dir.0.join("src").join("lib.rs"), "fn a() { compile_error!(\"boom\"); }").unwrap();
+    fs::write(
+        dir.0.join("src").join("lib.rs"),
+        "fn a() { compile_error!(\"boom\"); }",
+    )
+    .unwrap();
     let event = read_event(&mut sse);
-    assert!(event.contains("\"type\":\"error\""), "expected error event, got: {event}");
+    assert!(
+        event.contains("\"type\":\"error\""),
+        "expected error event, got: {event}"
+    );
 }

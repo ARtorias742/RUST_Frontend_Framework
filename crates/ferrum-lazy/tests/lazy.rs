@@ -34,7 +34,9 @@ fn immediate_executor() -> LazyExecutor {
 #[test]
 fn renders_fallback_until_chunk_resolves() {
     let loader: Rc<dyn Fn() -> LazyFuture> = Rc::new(|| {
-        Box::pin(async { rsx! { section { class: "chunk", "loaded" } } })
+        Box::pin(async {
+            rsx! { section { class: "chunk", "loaded" } }
+        })
     });
     let r = TestRenderer::new();
     r.render(move || {
@@ -54,7 +56,11 @@ fn renders_fallback_until_chunk_resolves() {
 
 #[test]
 fn pending_chunk_keeps_fallback() {
-    let loader: Rc<dyn Fn() -> LazyFuture> = Rc::new(|| Box::pin(async { rsx! { "never" } }));
+    let loader: Rc<dyn Fn() -> LazyFuture> = Rc::new(|| {
+        Box::pin(async {
+            rsx! { "never" }
+        })
+    });
     let executor: LazyExecutor = Rc::new(|_task: LazyTask| {
         // Drop the task: simulates a chunk that has not arrived yet.
     });
@@ -75,7 +81,9 @@ fn pending_chunk_keeps_fallback() {
 #[test]
 fn lazy_output_is_a_normal_vnode_tree() {
     let loader: Rc<dyn Fn() -> LazyFuture> = Rc::new(|| {
-        Box::pin(async { rsx! { ul { li { "a" } li { "b" } } } })
+        Box::pin(async {
+            rsx! { ul { li { "a" } li { "b" } } }
+        })
     });
     let r = TestRenderer::new();
     r.render(move || {

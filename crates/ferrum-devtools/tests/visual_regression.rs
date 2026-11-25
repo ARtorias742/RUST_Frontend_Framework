@@ -43,8 +43,12 @@ fn assert_snapshot(name: &str, actual: &str) {
         std::fs::write(&path, actual).unwrap();
         return;
     }
-    let expected = std::fs::read_to_string(&path)
-        .unwrap_or_else(|e| panic!("missing snapshot {}: {e} (run UPDATE_SNAPSHOTS=1)", path.display()));
+    let expected = std::fs::read_to_string(&path).unwrap_or_else(|e| {
+        panic!(
+            "missing snapshot {}: {e} (run UPDATE_SNAPSHOTS=1)",
+            path.display()
+        )
+    });
     assert_eq!(expected, actual, "snapshot {} drifted", name);
 }
 

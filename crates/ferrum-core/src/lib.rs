@@ -19,10 +19,10 @@ mod vnode;
 pub use debug::render_debug;
 pub use event::{EventHandler, FerrumEvent};
 pub use hooks::{
-    current_re_render, flush_effects, render_isolated, render_with, use_callback, use_context,
-    use_custom_rc, use_effect, use_effect_every, use_id, use_memo, use_reducer, use_ref,
-    use_state, Context, EffectCleanup, EffectJob, EffectQueue, HookEvent, HookInfo, HookObserver, Instance,
-    ReducerDispatch, StateSetter, set_hook_observer,
+    current_re_render, flush_effects, render_isolated, render_with, set_hook_observer,
+    use_callback, use_context, use_custom_rc, use_effect, use_effect_every, use_id, use_memo,
+    use_reducer, use_ref, use_state, Context, EffectCleanup, EffectJob, EffectQueue, HookEvent,
+    HookInfo, HookObserver, Instance, ReducerDispatch, StateSetter,
 };
 pub use key::Key;
 pub use vnode::{AttrValue, ComponentProps, ProviderNode, VComponent, VElement, VNode};

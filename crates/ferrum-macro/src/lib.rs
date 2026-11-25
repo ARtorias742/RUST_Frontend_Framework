@@ -229,11 +229,7 @@ fn parse_nodes(p: &mut P, stop: Stop) -> syn::Result<Vec<TS2>> {
                 let s = id.to_string();
                 let is_if = s == "if";
                 let is_for = s == "for";
-                let first_lower = s
-                    .chars()
-                    .next()
-                    .map(|c| c.is_lowercase())
-                    .unwrap_or(false);
+                let first_lower = s.chars().next().map(|c| c.is_lowercase()).unwrap_or(false);
                 p.i += 1;
                 if is_if {
                     nodes.push(parse_if(p)?);
@@ -298,10 +294,12 @@ fn expect_brace(p: &mut P, what: &str) -> syn::Result<proc_macro2::Group> {
     match p.bump() {
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => Ok(g),
         other => Err(syn::Error::new_spanned(
-            other.unwrap_or_else(|| proc_macro2::TokenTree::Punct(proc_macro2::Punct::new(
-                '!',
-                proc_macro2::Spacing::Alone,
-            ))),
+            other.unwrap_or_else(|| {
+                proc_macro2::TokenTree::Punct(proc_macro2::Punct::new(
+                    '!',
+                    proc_macro2::Spacing::Alone,
+                ))
+            }),
             format!("expected {}", what),
         )),
     }
@@ -522,7 +520,11 @@ fn parse_component(p: &mut P, name: String) -> syn::Result<TS2> {
     parse_component_with_group(p, name, group)
 }
 
-fn parse_component_with_group(p: &mut P, name: String, group: proc_macro2::Group) -> syn::Result<TS2> {
+fn parse_component_with_group(
+    p: &mut P,
+    name: String,
+    group: proc_macro2::Group,
+) -> syn::Result<TS2> {
     let body = parse_body(group.stream(), true)?;
     // Children: text/elements parsed inside the braces + an optional
     // trailing children block (`Comp { .. } { children }`).
@@ -719,10 +721,7 @@ fn interpolate_fmt(lit: &syn::LitStr) -> syn::Result<TS2> {
                         ));
                     }
                     if inner.trim().is_empty() {
-                        return Err(syn::Error::new(
-                            lit.span(),
-                            "empty `{}` interpolation",
-                        ));
+                        return Err(syn::Error::new(lit.span(), "empty `{}` interpolation"));
                     }
                     let ts: TS2 = inner.trim().parse().map_err(|_| {
                         syn::Error::new(lit.span(), format!("invalid expression `{}`", inner))

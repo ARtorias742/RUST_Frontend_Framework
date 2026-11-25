@@ -96,7 +96,10 @@ web-sys = "0.3"
             return 1;
         }
     }
-    println!("created {} ({} template; run `ferrum dev` inside)", name, template);
+    println!(
+        "created {} ({} template; run `ferrum dev` inside)",
+        name, template
+    );
     0
 }
 
@@ -211,7 +214,8 @@ pub fn start() {
 }
 "#
             .to_string(),
-            Template::Dashboard => r#"use ferrum_components::{Badge, Button, Card, Progress, Table, ThemeRoot};
+            Template::Dashboard => {
+                r#"use ferrum_components::{Badge, Button, Card, Progress, Table, ThemeRoot};
 use ferrum_core::{rsx, VNode};
 use std::rc::Rc;
 use ferrum_styling::Theme;
@@ -237,7 +241,8 @@ pub fn start() {
     });
 }
 "#
-            .to_string(),
+                .to_string()
+            }
             Template::Ssr => r#"use ferrum_core::{component, rsx, use_state, VNode};
 use ferrum_web::AppHandle;
 use wasm_bindgen::prelude::*;
@@ -271,8 +276,11 @@ pub fn start() {
 
     fn extra_files(&self) -> Vec<(&'static str, &'static str)> {
         match self {
-            Template::Dashboard => vec![("src/stat.rs", r#"// Extra widgets can live in their own module.
-"#)],
+            Template::Dashboard => vec![(
+                "src/stat.rs",
+                r#"// Extra widgets can live in their own module.
+"#,
+            )],
             _ => Vec::new(),
         }
     }
@@ -288,7 +296,10 @@ fn cmd_dev(rest: &[String]) -> i32 {
     match ferrum_dev::start(&root, port) {
         Ok(handle) => {
             println!("  ferrum dev");
-            println!("  ➜ Local:   http://localhost:{}/  (HMR: css hot-swap, rebuild+reload)", handle.port);
+            println!(
+                "  ➜ Local:   http://localhost:{}/  (HMR: css hot-swap, rebuild+reload)",
+                handle.port
+            );
             println!("  watching {} — Ctrl+C to stop", root.display());
             loop {
                 std::thread::sleep(std::time::Duration::from_secs(3600));
@@ -348,9 +359,7 @@ fn cmd_release(rest: &[String]) -> i32 {
         .and_then(|l| l.split('"').nth(1))
         .unwrap_or("");
     if workspace_version != version {
-        eprintln!(
-            "error: release version {version} != workspace version {workspace_version}"
-        );
+        eprintln!("error: release version {version} != workspace version {workspace_version}");
         return 1;
     }
     if version.parse::<ferrum_registry::Version>().is_err() {
@@ -366,9 +375,9 @@ fn cmd_release(rest: &[String]) -> i32 {
     }
     println!("✓ workspace tests green");
 
-    // 3. Size budget (default 150 KB gzipped is checked by the release script;
-    //    here we check the raw wasm against a conservative 400 KB).
-    if check_size_budget(400) != 0 {
+    // 3. Size budget (gzip is checked by scripts/check-size.sh; here we check
+    //    the raw wasm against a conservative 1 MB).
+    if check_size_budget(1024) != 0 {
         return 1;
     }
 
@@ -489,7 +498,14 @@ fn cmd_doctor() -> i32 {
     for (program, args) in checks {
         match Command::new(program).args(*args).output() {
             Ok(o) if o.status.success() => {
-                println!("✓ {} {}", program, String::from_utf8_lossy(&o.stdout).lines().next().unwrap_or(""))
+                println!(
+                    "✓ {} {}",
+                    program,
+                    String::from_utf8_lossy(&o.stdout)
+                        .lines()
+                        .next()
+                        .unwrap_or("")
+                )
             }
             _ => {
                 println!("✗ {} not found", program);

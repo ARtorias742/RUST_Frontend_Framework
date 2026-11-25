@@ -106,10 +106,7 @@ mod tests {
     #[test]
     fn keyed_passthrough() {
         let plan = plan_children(&[k(1), k(2)], &[k(1), k(2)]);
-        assert_eq!(
-            plan.ops,
-            vec![ChildOp::Reuse(0), ChildOp::Reuse(1)]
-        );
+        assert_eq!(plan.ops, vec![ChildOp::Reuse(0), ChildOp::Reuse(1)]);
     }
 
     #[test]

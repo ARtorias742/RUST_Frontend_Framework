@@ -14,7 +14,10 @@ use std::cell::Cell;
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::rc::Rc;
 
-use ferrum_core::{component, rsx, use_context, use_effect, use_id, use_memo, use_reducer, use_ref, use_state, Context, VNode};
+use ferrum_core::{
+    component, rsx, use_context, use_effect, use_id, use_memo, use_reducer, use_ref, use_state,
+    Context, VNode,
+};
 use ferrum_testing::TestRenderer;
 
 // ---------------------------------------------------------------------------
@@ -291,7 +294,10 @@ fn react_subset_conformance() {
         let h = TestRenderer::new();
         h.render(|| rsx! { Controlled { value: "abc".to_string() } });
         let input = h.find_all("input").remove(0);
-        assert_eq!(h.attr(&input, "value"), Some(ferrum_core::AttrValue::Str("abc".into())));
+        assert_eq!(
+            h.attr(&input, "value"),
+            Some(ferrum_core::AttrValue::Str("abc".into()))
+        );
     });
 
     r.check("event_payload_downcasts", || {
@@ -337,10 +343,19 @@ fn react_subset_conformance() {
         assert!(!html.contains("<script>"));
     });
 
-    println!("\nconformance: {}/{} passed ({:.1}%)", r.passed, r.total(), r.ratio() * 100.0);
+    println!(
+        "\nconformance: {}/{} passed ({:.1}%)",
+        r.passed,
+        r.total(),
+        r.ratio() * 100.0
+    );
     for f in &r.failed {
         println!("  failed: {f}");
     }
-    assert!(r.ratio() >= 0.95, "conformance gate: need >= 95%, got {:.1}%", r.ratio() * 100.0);
+    assert!(
+        r.ratio() >= 0.95,
+        "conformance gate: need >= 95%, got {:.1}%",
+        r.ratio() * 100.0
+    );
     assert!(r.failed.is_empty(), "failing checks: {:?}", r.failed);
 }

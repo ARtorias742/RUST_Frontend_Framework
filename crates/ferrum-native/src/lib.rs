@@ -92,7 +92,12 @@ impl NativeNode {
     }
 
     pub fn parent(&self) -> Option<NativeNode> {
-        self.0.parent.borrow().as_ref().and_then(|w| w.upgrade()).map(NativeNode)
+        self.0
+            .parent
+            .borrow()
+            .as_ref()
+            .and_then(|w| w.upgrade())
+            .map(NativeNode)
     }
 
     fn set_parent(&self, parent: Option<&NativeNode>) {
@@ -158,7 +163,12 @@ impl Renderer for NativeBackend {
         child.set_parent(Some(parent));
     }
 
-    fn insert_before(&self, parent: &NativeNode, child: &NativeNode, reference: Option<&NativeNode>) {
+    fn insert_before(
+        &self,
+        parent: &NativeNode,
+        child: &NativeNode,
+        reference: Option<&NativeNode>,
+    ) {
         child.detach();
         let mut children = parent.0.children.borrow_mut();
         let index = reference
@@ -181,7 +191,9 @@ impl Renderer for NativeBackend {
     fn next_sibling(&self, node: &NativeNode) -> Option<NativeNode> {
         let parent = node.parent()?;
         let children = parent.0.children.borrow();
-        let pos = children.iter().position(|c| NativeBackend::node_eq(c, node))?;
+        let pos = children
+            .iter()
+            .position(|c| NativeBackend::node_eq(c, node))?;
         children.get(pos + 1).cloned()
     }
 
@@ -212,7 +224,12 @@ impl Renderer for NativeBackend {
         old.set_parent(None);
     }
 
-    fn add_listener(&self, node: &NativeNode, name: &str, handler: ferrum_core::EventHandler) -> ListenerHandle {
+    fn add_listener(
+        &self,
+        node: &NativeNode,
+        name: &str,
+        handler: ferrum_core::EventHandler,
+    ) -> ListenerHandle {
         let id = next_listener_id();
         if let NativeKind::Element { listeners, .. } = &mut *node.0.kind.borrow_mut() {
             listeners.push((id, name.to_string(), handler));
@@ -221,7 +238,10 @@ impl Renderer for NativeBackend {
     }
 
     fn remove_listener(&self, node: &NativeNode, handle: ListenerHandle) {
-        let id = *handle.0.downcast_ref::<u64>().expect("listener handle type");
+        let id = *handle
+            .0
+            .downcast_ref::<u64>()
+            .expect("listener handle type");
         if let NativeKind::Element { listeners, .. } = &mut *node.0.kind.borrow_mut() {
             listeners.retain(|(i, _, _)| *i != id);
         }
@@ -324,7 +344,9 @@ impl NativeApp {
                 panic!("Ferrum: maximum update depth exceeded (50 nested renders)");
             }
             i.depth += 1;
-            let NativeInner { tree, render_fn, .. } = &mut *i;
+            let NativeInner {
+                tree, render_fn, ..
+            } = &mut *i;
             if let Some(f) = render_fn.as_mut() {
                 let vnode = f();
                 tree.render(&vnode);
@@ -397,7 +419,11 @@ impl Default for NativeApp {
     }
 }
 
-fn collect_listeners_rec(node: &NativeNode, event: &str, out: &mut Vec<(NativeNode, ferrum_core::EventHandler)>) {
+fn collect_listeners_rec(
+    node: &NativeNode,
+    event: &str,
+    out: &mut Vec<(NativeNode, ferrum_core::EventHandler)>,
+) {
     if let NativeKind::Element { listeners, .. } = &*node.0.kind.borrow() {
         for (_, name, handler) in listeners.iter() {
             if name == event || name.strip_prefix("on") == Some(event) {

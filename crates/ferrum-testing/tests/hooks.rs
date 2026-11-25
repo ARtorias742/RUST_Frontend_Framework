@@ -87,7 +87,11 @@ fn use_effect_skips_when_deps_unchanged() {
     r.render(move || rsx! { Probe { runs: runs2.clone(), cleanups: cleanups2.clone() } });
     r.re_render();
     r.re_render();
-    assert_eq!(runs.get(), 1, "effect must not re-run when deps are unchanged");
+    assert_eq!(
+        runs.get(),
+        1,
+        "effect must not re-run when deps are unchanged"
+    );
 }
 
 #[test]
@@ -200,7 +204,11 @@ fn use_ref_stable_and_mutable() {
     r.render(move || rsx! { RefProbe { boxed: b2.clone() } });
     r.re_render();
     r.re_render();
-    assert_eq!(boxed.get(), 3, "ref persists and accumulates across renders");
+    assert_eq!(
+        boxed.get(),
+        3,
+        "ref persists and accumulates across renders"
+    );
 }
 
 // --- use_reducer ------------------------------------------------------------------
@@ -239,7 +247,12 @@ fn Consumer(ctx: Context<String>) -> VNode {
 fn use_context_reads_provider() {
     let theme = Context::<String>::new();
     let r = TestRenderer::new();
-    r.render(move || theme.provider("dark".to_string(), vec![rsx! { Consumer { ctx: theme.clone() } }]));
+    r.render(move || {
+        theme.provider(
+            "dark".to_string(),
+            vec![rsx! { Consumer { ctx: theme.clone() } }],
+        )
+    });
     assert_eq!(r.text(), "dark");
 }
 

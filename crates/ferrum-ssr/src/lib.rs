@@ -84,12 +84,7 @@ fn write_node<W: std::fmt::Write>(vnode: &VNode, out: &mut W) {
                     }
                     AttrValue::Bool(false) => {}
                     _ => {
-                        let _ = write!(
-                            out,
-                            " {}=\"{}\"",
-                            name,
-                            escape_attr(&value.to_string())
-                        );
+                        let _ = write!(out, " {}=\"{}\"", name, escape_attr(&value.to_string()));
                     }
                 }
             }
@@ -109,12 +104,7 @@ fn write_node<W: std::fmt::Write>(vnode: &VNode, out: &mut W) {
             // Fresh instance per SSR pass; effects are discarded.
             let instance = Instance::new(c.name);
             let effects: EffectQueue = Rc::new(std::cell::RefCell::new(Vec::new()));
-            let rendered = render_with(
-                &instance,
-                Rc::new(|| {}),
-                effects,
-                || c.props.render(),
-            );
+            let rendered = render_with(&instance, Rc::new(|| {}), effects, || c.props.render());
             write_node(&rendered, out);
         }
         VNode::Fragment(children) => {

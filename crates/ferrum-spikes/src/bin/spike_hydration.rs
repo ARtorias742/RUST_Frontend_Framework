@@ -203,7 +203,11 @@ fn hydrate(dom: &mut TNode, vdom: &VNode, st: &mut Stats) {
         // Fragments/providers have no DOM node: their children hydrate
         // against the current DOM parent's children, in order (transparent).
         VNode::Fragment(children) => {
-            if let TNode::Element { children: dchildren, .. } = dom {
+            if let TNode::Element {
+                children: dchildren,
+                ..
+            } = dom
+            {
                 hydrate_children(dchildren, children, st);
             } else {
                 *dom = to_toy(vdom);
@@ -211,7 +215,11 @@ fn hydrate(dom: &mut TNode, vdom: &VNode, st: &mut Stats) {
             }
         }
         VNode::Provider(p) => {
-            if let TNode::Element { children: dchildren, .. } = dom {
+            if let TNode::Element {
+                children: dchildren,
+                ..
+            } = dom
+            {
                 hydrate_children(dchildren, &p.children, st);
             } else {
                 *dom = to_toy(vdom);
@@ -285,7 +293,9 @@ fn hydrate_children_at(dom: &mut Vec<TNode>, vdom: &[VNode], di: &mut usize, st:
 
 fn main() {
     // The "app": a 300-row list (rows embedded as a fragment, like real apps).
-    let rows: Vec<VNode> = (0..300).map(|i| rsx! { li { class: "row", "row {i}" } }).collect();
+    let rows: Vec<VNode> = (0..300)
+        .map(|i| rsx! { li { class: "row", "row {i}" } })
+        .collect();
     let app = rsx! { ul { class: "list", {rows} } };
 
     // Server render + transport (string) + parse (browser's existing DOM).

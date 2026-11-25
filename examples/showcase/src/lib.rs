@@ -5,8 +5,8 @@
 
 use ferrum_components::{
     Accordion, AccordionItem, Alert, Avatar, Badge, Breadcrumb, Button, Card, Checkbox, Divider,
-    EmptyState, List, Progress, Select, Skeleton, Switch, Table, Tabs, TabItem, Textarea, ThemeRoot,
-    Tooltip,
+    EmptyState, List, Progress, Select, Skeleton, Switch, TabItem, Table, Tabs, Textarea,
+    ThemeRoot, Tooltip,
 };
 use ferrum_core::{component, rsx};
 use ferrum_styling::Theme;

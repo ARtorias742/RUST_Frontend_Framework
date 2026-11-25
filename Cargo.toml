@@ -5,26 +5,31 @@ members = ["crates/*", "examples/*"]
 [workspace.package]
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.76"
 license = "Apache-2.0"
 repository = "https://github.com/ferrum-rs/ferrum"
+readme = "README.md"
+keywords = ["rust", "wasm", "frontend", "web", "framework"]
+categories = ["web-programming", "wasm", "gui"]
+exclude = ["website/**", "e2e/**", "fuzz/**", ".github/**", "docs/**"]
 
 [workspace.dependencies]
-ferrum-core = { path = "crates/ferrum-core" }
-ferrum-macro = { path = "crates/ferrum-macro" }
-ferrum-reconciler = { path = "crates/ferrum-reconciler" }
-ferrum-web = { path = "crates/ferrum-web" }
-ferrum-router = { path = "crates/ferrum-router" }
-ferrum-data = { path = "crates/ferrum-data" }
-ferrum-styling = { path = "crates/ferrum-styling" }
-ferrum-components = { path = "crates/ferrum-components" }
-ferrum-testing = { path = "crates/ferrum-testing" }
-ferrum-devtools = { path = "crates/ferrum-devtools" }
-ferrum-registry = { path = "crates/ferrum-registry" }
-ferrum-security = { path = "crates/ferrum-security" }
-ferrum-conformance = { path = "crates/ferrum-conformance" }
-ferrum-ssr = { path = "crates/ferrum-ssr" }
-ferrum-native = { path = "crates/ferrum-native" }
-ferrum-lazy = { path = "crates/ferrum-lazy" }
+ferrum-core = { path = "crates/ferrum-core", version = "0.1.0" }
+ferrum-macro = { path = "crates/ferrum-macro", version = "0.1.0" }
+ferrum-reconciler = { path = "crates/ferrum-reconciler", version = "0.1.0" }
+ferrum-web = { path = "crates/ferrum-web", version = "0.1.0" }
+ferrum-router = { path = "crates/ferrum-router", version = "0.1.0" }
+ferrum-data = { path = "crates/ferrum-data", version = "0.1.0" }
+ferrum-styling = { path = "crates/ferrum-styling", version = "0.1.0" }
+ferrum-components = { path = "crates/ferrum-components", version = "0.1.0" }
+ferrum-testing = { path = "crates/ferrum-testing", version = "0.1.0" }
+ferrum-devtools = { path = "crates/ferrum-devtools", version = "0.1.0" }
+ferrum-registry = { path = "crates/ferrum-registry", version = "0.1.0" }
+ferrum-security = { path = "crates/ferrum-security", version = "0.1.0" }
+ferrum-conformance = { path = "crates/ferrum-conformance", version = "0.1.0" }
+ferrum-ssr = { path = "crates/ferrum-ssr", version = "0.1.0" }
+ferrum-native = { path = "crates/ferrum-native", version = "0.1.0" }
+ferrum-lazy = { path = "crates/ferrum-lazy", version = "0.1.0" }
 example-shared = { path = "examples/shared" }
 wasm-bindgen = "0.2"
 wasm-bindgen-test = "0.3"
@@ -46,3 +51,10 @@ web-sys = { version = "0.3", features = [
     "console",
 ] }
 js-sys = "0.3"
+# Release profile tuned for wasm size; the bench profile inherits it.
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

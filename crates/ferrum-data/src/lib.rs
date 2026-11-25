@@ -71,7 +71,12 @@ pub fn set_request_observer(observer: Option<RequestObserverRef>) {
     REQUEST_EPOCH.with(|e| e.set(Some(std::time::Instant::now())));
 }
 
-fn emit_request(key: &str, phase: RequestPhase, started: std::time::Instant, error: Option<String>) {
+fn emit_request(
+    key: &str,
+    phase: RequestPhase,
+    started: std::time::Instant,
+    error: Option<String>,
+) {
     REQUEST_OBSERVER.with(|o| {
         let observer = o.borrow().clone();
         if let Some(observer) = observer {
@@ -164,7 +169,9 @@ impl Client {
             watchers: RefCell::new(Vec::new()),
             inflight: Cell::new(false),
         });
-        self.cache.borrow_mut().insert(key.to_string(), entry.clone());
+        self.cache
+            .borrow_mut()
+            .insert(key.to_string(), entry.clone());
         entry
     }
 }
@@ -208,8 +215,7 @@ where
     let entry = client.entry_for(key);
     let id = next_watcher_id();
     entry.register(id, re_render.clone());
-    let need_spawn =
-        matches!(*entry.state.borrow(), QueryState::Loading) && !entry.inflight.get();
+    let need_spawn = matches!(*entry.state.borrow(), QueryState::Loading) && !entry.inflight.get();
     if need_spawn {
         entry.inflight.set(true);
         let entry2 = entry.clone();

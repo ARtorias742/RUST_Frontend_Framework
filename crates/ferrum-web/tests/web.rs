@@ -52,7 +52,10 @@ fn mounts_component() {
     let root = fresh_root();
     let mut r = WebRenderer::new(root.clone());
     r.render(&rsx! { Greeting { name: "Ferrum" } });
-    assert_eq!(root.inner_html(), "<span class=\"greeting\">Hello, Ferrum</span>");
+    assert_eq!(
+        root.inner_html(),
+        "<span class=\"greeting\">Hello, Ferrum</span>"
+    );
 }
 
 #[wasm_bindgen_test]
@@ -134,11 +137,7 @@ fn controlled_input_value_property() {
     let root = fresh_root();
     let mut r = WebRenderer::new(root.clone());
     r.render(&rsx! { input { value: "one" } });
-    let input: web_sys::HtmlInputElement = root
-        .first_child()
-        .unwrap()
-        .dyn_into()
-        .unwrap();
+    let input: web_sys::HtmlInputElement = root.first_child().unwrap().dyn_into().unwrap();
     assert_eq!(input.value(), "one");
     r.render(&rsx! { input { value: "two" } });
     assert_eq!(input.value(), "two");
@@ -195,7 +194,10 @@ fn component_library_renders_identically_to_native() {
     let tree = ferrum_core::VNode::component(
         "ThemeRoot",
         None,
-        ThemeRoot { theme: Theme::light(), children: vec![child] },
+        ThemeRoot {
+            theme: Theme::light(),
+            children: vec![child],
+        },
     );
     r.render(&tree);
     let html = root.inner_html();
@@ -208,11 +210,7 @@ fn component_library_renders_identically_to_native() {
 fn hydrates_server_html_and_fixes_text_in_place() {
     let root = fresh_root();
     root.set_inner_html("<div class=\"app\"><h1>Server</h1><p>one</p></div>");
-    let h1 = root
-        .first_child()
-        .unwrap()
-        .first_child()
-        .unwrap();
+    let h1 = root.first_child().unwrap().first_child().unwrap();
 
     let mut r = WebRenderer::new(root.clone());
     let stats = r.hydrate(&rsx! {

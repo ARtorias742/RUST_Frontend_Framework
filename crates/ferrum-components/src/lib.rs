@@ -36,36 +36,156 @@ pub struct ComponentMeta {
 
 /// All 30 components, in documentation order.
 pub const CATALOG: &[ComponentMeta] = &[
-    ComponentMeta { name: "ThemeRoot", category: "layout", since: "0.1" },
-    ComponentMeta { name: "Button", category: "action", since: "0.1" },
-    ComponentMeta { name: "Card", category: "layout", since: "0.1" },
-    ComponentMeta { name: "Badge", category: "data-display", since: "0.1" },
-    ComponentMeta { name: "Input", category: "form", since: "1.0" },
-    ComponentMeta { name: "Textarea", category: "form", since: "1.0" },
-    ComponentMeta { name: "Select", category: "form", since: "1.0" },
-    ComponentMeta { name: "Checkbox", category: "form", since: "1.0" },
-    ComponentMeta { name: "Radio", category: "form", since: "1.0" },
-    ComponentMeta { name: "Switch", category: "form", since: "1.0" },
-    ComponentMeta { name: "Label", category: "form", since: "1.0" },
-    ComponentMeta { name: "FormField", category: "form", since: "1.0" },
-    ComponentMeta { name: "Slider", category: "form", since: "1.0" },
-    ComponentMeta { name: "Modal", category: "overlay", since: "1.0" },
-    ComponentMeta { name: "Tooltip", category: "overlay", since: "1.0" },
-    ComponentMeta { name: "Tabs", category: "navigation", since: "1.0" },
-    ComponentMeta { name: "Accordion", category: "data-display", since: "1.0" },
-    ComponentMeta { name: "Menu", category: "navigation", since: "1.0" },
-    ComponentMeta { name: "Alert", category: "feedback", since: "1.0" },
-    ComponentMeta { name: "Toast", category: "feedback", since: "1.0" },
-    ComponentMeta { name: "Progress", category: "feedback", since: "1.0" },
-    ComponentMeta { name: "Spinner", category: "feedback", since: "1.0" },
-    ComponentMeta { name: "Skeleton", category: "feedback", since: "1.0" },
-    ComponentMeta { name: "Avatar", category: "data-display", since: "1.0" },
-    ComponentMeta { name: "Table", category: "data-display", since: "1.0" },
-    ComponentMeta { name: "List", category: "data-display", since: "1.0" },
-    ComponentMeta { name: "Pagination", category: "navigation", since: "1.0" },
-    ComponentMeta { name: "Breadcrumb", category: "navigation", since: "1.0" },
-    ComponentMeta { name: "Divider", category: "layout", since: "1.0" },
-    ComponentMeta { name: "EmptyState", category: "layout", since: "1.0" },
+    ComponentMeta {
+        name: "ThemeRoot",
+        category: "layout",
+        since: "0.1",
+    },
+    ComponentMeta {
+        name: "Button",
+        category: "action",
+        since: "0.1",
+    },
+    ComponentMeta {
+        name: "Card",
+        category: "layout",
+        since: "0.1",
+    },
+    ComponentMeta {
+        name: "Badge",
+        category: "data-display",
+        since: "0.1",
+    },
+    ComponentMeta {
+        name: "Input",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Textarea",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Select",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Checkbox",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Radio",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Switch",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Label",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "FormField",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Slider",
+        category: "form",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Modal",
+        category: "overlay",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Tooltip",
+        category: "overlay",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Tabs",
+        category: "navigation",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Accordion",
+        category: "data-display",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Menu",
+        category: "navigation",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Alert",
+        category: "feedback",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Toast",
+        category: "feedback",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Progress",
+        category: "feedback",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Spinner",
+        category: "feedback",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Skeleton",
+        category: "feedback",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Avatar",
+        category: "data-display",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Table",
+        category: "data-display",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "List",
+        category: "data-display",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Pagination",
+        category: "navigation",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Breadcrumb",
+        category: "navigation",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "Divider",
+        category: "layout",
+        since: "1.0",
+    },
+    ComponentMeta {
+        name: "EmptyState",
+        category: "layout",
+        since: "1.0",
+    },
 ];
 
 // ---------------------------------------------------------------------------
@@ -85,7 +205,10 @@ pub fn ThemeRoot(theme: Theme, children: Vec<VNode>) -> VNode {
         tag: "div".to_string(),
         attrs: vec![
             ("style".to_string(), ferrum_core::AttrValue::Str(style)),
-            ("dir".to_string(), ferrum_core::AttrValue::Str(dir.to_string())),
+            (
+                "dir".to_string(),
+                ferrum_core::AttrValue::Str(dir.to_string()),
+            ),
         ],
         listeners: Vec::new(),
         // Keep the Provider wrapper so renderers push the context value.
@@ -167,11 +290,7 @@ pub fn EmptyState(title: String, description: String, children: Vec<VNode>) -> V
 
 /// A button. `variant`: "primary" (default) or "ghost".
 #[component]
-pub fn Button(
-    variant: String,
-    on_click: Option<EventHandler>,
-    children: Vec<VNode>,
-) -> VNode {
+pub fn Button(variant: String, on_click: Option<EventHandler>, children: Vec<VNode>) -> VNode {
     let base = css! {
         all: unset;
         box-sizing: border-box;
@@ -241,7 +360,11 @@ pub fn Avatar(name: String, src: String, size: String) -> VNode {
         font-weight: 600;
         overflow: hidden;
     };
-    let size_style = if size.is_empty() { "40px".to_string() } else { size.clone() };
+    let size_style = if size.is_empty() {
+        "40px".to_string()
+    } else {
+        size.clone()
+    };
     let style = format!("width: {}; height: {};", size_style, size_style);
     if src.is_empty() {
         let initials: String = name
@@ -294,10 +417,7 @@ pub fn Table(columns: Vec<String>, rows: Vec<Vec<String>>) -> VNode {
 #[component]
 pub fn List(items: Vec<String>, ordered: bool) -> VNode {
     let list = css! { margin: 0; padding-inline-start: 20px; };
-    let nodes: Vec<VNode> = items
-        .iter()
-        .map(|i| rsx! { li { "{i}" } })
-        .collect();
+    let nodes: Vec<VNode> = items.iter().map(|i| rsx! { li { "{i}" } }).collect();
     if *ordered {
         rsx! { ol { class: list.name(), {nodes} } }
     } else {
@@ -438,11 +558,7 @@ pub fn Textarea(
 
 /// A select box.
 #[component]
-pub fn Select(
-    options: Vec<String>,
-    value: String,
-    on_change: Option<EventHandler>,
-) -> VNode {
+pub fn Select(options: Vec<String>, value: String, on_change: Option<EventHandler>) -> VNode {
     let select = css! {
         box-sizing: border-box;
         padding: 8px 10px;
@@ -472,11 +588,7 @@ pub fn Select(
 
 /// A checkbox with a label.
 #[component]
-pub fn Checkbox(
-    checked: bool,
-    label: String,
-    on_change: Option<EventHandler>,
-) -> VNode {
+pub fn Checkbox(checked: bool, label: String, on_change: Option<EventHandler>) -> VNode {
     let checked = *checked;
     let row = css! { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; };
     let handler = on_change.clone();
@@ -522,11 +634,7 @@ pub fn Radio(
 
 /// A switch (a checkbox with a track).
 #[component]
-pub fn Switch(
-    checked: bool,
-    label: String,
-    on_change: Option<EventHandler>,
-) -> VNode {
+pub fn Switch(checked: bool, label: String, on_change: Option<EventHandler>) -> VNode {
     let checked = *checked;
     let row = css! { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; };
     let track = css! {
@@ -575,11 +683,7 @@ pub fn Label(for_id: String, text: String) -> VNode {
 
 /// A label + control + error message.
 #[component]
-pub fn FormField(
-    label: String,
-    error: String,
-    children: Vec<VNode>,
-) -> VNode {
+pub fn FormField(label: String, error: String, children: Vec<VNode>) -> VNode {
     let field = css! { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; };
     let err = css! { color: #b91c1c; font-size: 0.85rem; };
     let error_node = if error.is_empty() {
@@ -597,12 +701,7 @@ pub fn FormField(
 
 /// A range slider.
 #[component]
-pub fn Slider(
-    min: i32,
-    max: i32,
-    value: i32,
-    on_input: Option<EventHandler>,
-) -> VNode {
+pub fn Slider(min: i32, max: i32, value: i32, on_input: Option<EventHandler>) -> VNode {
     let (min, max, value) = (*min, *max, *value);
     let slider = css! { width: 100%; accent-color: var(--accent); };
     match on_input {
@@ -619,7 +718,9 @@ pub fn Slider(
                 }
             }
         }
-        None => rsx! { input { class: slider.name(), type: "range", min: min, max: max, value: value } },
+        None => {
+            rsx! { input { class: slider.name(), type: "range", min: min, max: max, value: value } }
+        }
     }
 }
 
@@ -656,7 +757,8 @@ pub fn Modal(
         max-width: 90vw;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     };
-    let head = css! { display: flex; justify-content: space-between; align-items: center; gap: 16px; };
+    let head =
+        css! { display: flex; justify-content: space-between; align-items: center; gap: 16px; };
     let close = css! { all: unset; cursor: pointer; font-size: 1.2rem; line-height: 1; };
     let close_node = match on_close {
         Some(handler) => {
@@ -878,10 +980,7 @@ pub fn Pagination(page: usize, pages: usize, on_change: Option<EventHandler>) ->
 #[component]
 pub fn Breadcrumb(items: Vec<String>) -> VNode {
     let nav = css! { display: flex; gap: 6px; font-size: 0.9rem; color: var(--muted); };
-    let nodes: Vec<VNode> = items
-        .iter()
-        .map(|i| rsx! { span { "{i}" } })
-        .collect();
+    let nodes: Vec<VNode> = items.iter().map(|i| rsx! { span { "{i}" } }).collect();
     rsx! { nav { class: nav.name(), aria-label: "Breadcrumb", {nodes} } }
 }
 
@@ -982,7 +1081,11 @@ pub fn Skeleton(lines: usize, width: String) -> VNode {
         opacity: 0.5;
         margin-bottom: 8px;
     };
-    let style = if width.is_empty() { "100%".to_string() } else { width.clone() };
+    let style = if width.is_empty() {
+        "100%".to_string()
+    } else {
+        width.clone()
+    };
     let rows: Vec<VNode> = (0..*lines)
         .map(|_| rsx! { div { class: bar.name(), style: style.clone() } })
         .collect();

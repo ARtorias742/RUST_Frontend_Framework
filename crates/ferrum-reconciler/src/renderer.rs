@@ -38,7 +38,12 @@ pub trait Renderer {
     fn remove_attribute(&self, node: &Self::Node, name: &str);
     fn set_text(&self, node: &Self::Node, text: &str);
     fn append_child(&self, parent: &Self::Node, child: &Self::Node);
-    fn insert_before(&self, parent: &Self::Node, child: &Self::Node, reference: Option<&Self::Node>);
+    fn insert_before(
+        &self,
+        parent: &Self::Node,
+        child: &Self::Node,
+        reference: Option<&Self::Node>,
+    );
     fn remove_child(&self, parent: &Self::Node, child: &Self::Node);
     fn next_sibling(&self, node: &Self::Node) -> Option<Self::Node>;
     fn node_eq(a: &Self::Node, b: &Self::Node) -> bool;
@@ -72,7 +77,10 @@ pub struct HydrationStats {
 
 enum MountedNode<N: Clone> {
     Element(MountedElement<N>),
-    Text { node: N, text: String },
+    Text {
+        node: N,
+        text: String,
+    },
     Component {
         instance: Rc<Instance>,
         rendered: Box<MountedNode<N>>,
@@ -412,14 +420,15 @@ impl<B: Renderer> TreeRenderer<B> {
                     mounted.attrs.push((name.clone(), value.clone()));
                 }
                 for (name, handler) in &e.listeners {
-                    let handle = self.backend.add_listener(&mounted.node, name, handler.clone());
+                    let handle = self
+                        .backend
+                        .add_listener(&mounted.node, name, handler.clone());
                     mounted.listeners.push((name.clone(), handle));
                 }
 
                 let mut child_cursor = self.backend.first_child(&node);
                 for child in &e.children {
-                    let mounted_child =
-                        self.hydrate_vnode(&node, &mut child_cursor, child, stats);
+                    let mounted_child = self.hydrate_vnode(&node, &mut child_cursor, child, stats);
                     mounted.children.push(mounted_child);
                 }
                 while let Some(extra) = child_cursor.take() {
@@ -472,8 +481,7 @@ impl<B: Renderer> TreeRenderer<B> {
                     self.effects.clone(),
                     || c.props.render(),
                 );
-                let rendered =
-                    self.hydrate_vnode(parent, cursor, &rendered_vnode, stats);
+                let rendered = self.hydrate_vnode(parent, cursor, &rendered_vnode, stats);
                 self.component_stack.borrow_mut().pop();
                 crate::devtools::report_mount(
                     instance.id,

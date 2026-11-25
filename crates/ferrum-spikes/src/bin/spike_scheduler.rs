@@ -96,18 +96,33 @@ fn main() {
     let (naive_total, naive_slices, naive_max) = run(&items, Duration::from_secs(3600));
 
     println!("== spike-scheduler ==");
-    println!("work items:          {} (sync/default/transition lanes)", items.len());
+    println!(
+        "work items:          {} (sync/default/transition lanes)",
+        items.len()
+    );
     println!("frame budget:        {budget:?}");
     println!("-- scheduled --");
     println!("total time:          {:.2} ms", total.as_secs_f64() * 1e3);
     println!("yields (slices):     {slices}");
-    println!("max slice time:      {:.2} ms", max_slice.as_secs_f64() * 1e3);
+    println!(
+        "max slice time:      {:.2} ms",
+        max_slice.as_secs_f64() * 1e3
+    );
     println!("-- naive (no yield) --");
-    println!("total time:          {:.2} ms", naive_total.as_secs_f64() * 1e3);
+    println!(
+        "total time:          {:.2} ms",
+        naive_total.as_secs_f64() * 1e3
+    );
     println!("yields (slices):     {naive_slices}");
-    println!("max slice time:      {:.2} ms  (one long block = jank)", naive_max.as_secs_f64() * 1e3);
+    println!(
+        "max slice time:      {:.2} ms  (one long block = jank)",
+        naive_max.as_secs_f64() * 1e3
+    );
     println!("verdict:             time slicing bounds the max slice to ~budget");
-    assert!(naive_slices < slices, "scheduler must yield more than naive");
+    assert!(
+        naive_slices < slices,
+        "scheduler must yield more than naive"
+    );
     assert!(
         max_slice <= budget + Duration::from_millis(2),
         "max slice should stay near the budget"

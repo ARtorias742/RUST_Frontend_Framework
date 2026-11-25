@@ -19,8 +19,7 @@ fn catalog_names_are_unique_and_non_empty() {
 
 #[test]
 fn catalog_covers_every_category() {
-    let categories: std::collections::BTreeSet<&str> =
-        CATALOG.iter().map(|c| c.category).collect();
+    let categories: std::collections::BTreeSet<&str> = CATALOG.iter().map(|c| c.category).collect();
     for expected in [
         "layout",
         "action",
