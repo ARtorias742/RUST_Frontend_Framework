@@ -201,16 +201,16 @@ dependencies = [
 name = "ferrum-components"
 version = "0.1.0"
 dependencies = [
- "ferrum-native",
  "ferrum-rs-core",
  "ferrum-styling",
- "ferrum-testing",
 ]
 
 [[package]]
 name = "ferrum-conformance"
 version = "0.1.0"
 dependencies = [
+ "ferrum-components",
+ "ferrum-native",
  "ferrum-rs-core",
  "ferrum-ssr",
  "ferrum-testing",
@@ -241,7 +241,6 @@ name = "ferrum-framework"
 version = "0.1.0"
 dependencies = [
  "ferrum-components",
- "ferrum-conformance",
  "ferrum-data",
  "ferrum-devtools",
  "ferrum-lazy",

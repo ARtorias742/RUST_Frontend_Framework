@@ -20,7 +20,9 @@ jobs:
             echo "CARGO_TOKEN not set; skipping publish"
             exit 0
           fi
-          for c in ferrum-data ferrum-components ferrum-testing \
+          for c in ferrum-native ferrum-components ferrum-testing ferrum-ssr ferrum-lazy \
+                   ferrum-security ferrum-registry ferrum-devtools ferrum-web \
+                   ferrum-framework ferrum-ui-core ferrum-ui; do
                    ferrum-ssr ferrum-native ferrum-lazy ferrum-security \
                    ferrum-registry ferrum-devtools ferrum-web ferrum-framework \
                    ferrum-ui-core ferrum-ui; do

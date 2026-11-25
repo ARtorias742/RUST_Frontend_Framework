@@ -13,6 +13,8 @@ exclude.workspace = true
 publish = false
 
 [dev-dependencies]
+ferrum-components = { workspace = true }
+ferrum-native = { workspace = true }
 ferrum-core = { workspace = true }
 ferrum-testing = { workspace = true }
 ferrum-ssr = { workspace = true }
