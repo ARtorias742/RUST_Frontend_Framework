@@ -1,0 +1,18 @@
+[package]
+name = "example-realworld"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ferrum-core = { workspace = true }
+ferrum-web = { workspace = true }
+ferrum-components = { workspace = true }
+ferrum-styling = { workspace = true }
+wasm-bindgen = { workspace = true }
+web-sys = { workspace = true }

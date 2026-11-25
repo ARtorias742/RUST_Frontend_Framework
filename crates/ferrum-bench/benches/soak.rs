@@ -7,7 +7,7 @@
 use std::alloc::{GlobalAlloc, Layout, System};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-use ferrum_core::{component, rsx, use_state, VNode};
+use ferrum_core::{component, rsx, use_state};
 use ferrum_testing::TestRenderer;
 
 struct Counting;
@@ -24,7 +24,6 @@ unsafe impl GlobalAlloc for Counting {
         System.dealloc(ptr, layout)
     }
     unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
-        let new_layout = Layout::from_size_align_unchecked(new_size, layout.align());
         ALLOCATED.fetch_add(new_size, Ordering::Relaxed);
         ALLOCATED.fetch_sub(layout.size(), Ordering::Relaxed);
         System.realloc(ptr, layout, new_size)

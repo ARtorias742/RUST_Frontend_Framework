@@ -48,6 +48,7 @@ fn Counter() -> VNode {
 | `showcase` | component gallery |
 | `dashboard` | tables + progress |
 | `blog` | routed blog with params |
+| `realworld` | persistent task board (the demo) |
 
 ## `ferrum new`
 

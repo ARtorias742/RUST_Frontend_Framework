@@ -26,7 +26,7 @@ alternative to JS-first frameworks — not a React clone.
 | Security (sanitizer/CSP) | Basic, **not audited** |
 | Browser matrix / Lighthouse | **Not verified** |
 | API stability | **None** — 0.1 alpha |
-| Bundle | 181 KB gzip core (alpha budget 200 KB; 1.0 target 150 KB) |
+| Bundle | 192 KB gzip demo (core 181 KB; alpha budget 200 KB; 1.0 target 150 KB) |
 
 ## Quickstart
 
@@ -63,7 +63,10 @@ fn Counter() -> VNode {
 ```
 
 More examples: `examples/counter`, `todo`, `form`, `hooks`, `spa`, `ssr`,
-`native`, `devtools`, `showcase`, `dashboard`, `blog`.
+`native`, `devtools`, `showcase`, `dashboard`, `blog`, `realworld`.
+
+The live alpha demo (task board with `localStorage`) and the docs site are
+deployed from `main` to GitHub Pages: `/demo/` and `/docs/`.
 
 ## Architecture
 
@@ -108,14 +111,28 @@ scripts/e2e.sh                    # Playwright + a local server
 - No Safari/Firefox/Edge verification yet.
 - Sanitizer and CSP are not independently audited.
 - Fuzzing is configured but not yet run in CI.
-- Bundle is above the 1.0 target (181 KB vs 150 KB gzip); optimization is pending.
+- Bundle is above the 1.0 target (192 KB demo vs 150 KB gzip); optimization is pending.
 - No crates.io release, docs site, or signed artifacts yet.
 - `ferrum new` templates target the future published crates; use the
   examples until 0.1 is published.
 
+## Why Ferrum
+
+- **Rust end to end.** One language, one type system, no JS bridge in your
+  component code.
+- **Small explicit core.** A tiny VNode IR; web, native and headless are
+  replaceable backends over one reconciler.
+- **Safe by default.** No `eval`, escaped SSR, allowlist sanitizer, nonce CSP.
+- **Batteries for the 80%.** Router, data, styling, 30 components, DevTools,
+  SSR — without leaving the Rust crate graph.
+
+It is not trying to be React. It is trying to be the smallest Rust framework
+that can build a real app without a JS toolchain.
+
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and
+See [CONTRIBUTING.md](CONTRIBUTING.md),
+[GOVERNANCE.md](GOVERNANCE.md), [SUPPORT.md](SUPPORT.md), and
 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Security reports:
 [SECURITY.md](SECURITY.md).
 

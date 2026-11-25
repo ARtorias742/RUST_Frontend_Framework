@@ -13,7 +13,7 @@
 | Security | Basic, not audited |
 | Browser matrix / Lighthouse | Not verified |
 | API stability | None (0.1 alpha) |
-| Bundle | 181 KB gzip (alpha budget 200 KB; 1.0 target 150 KB) |
+| Bundle | 192 KB gzip demo (core 181 KB; alpha budget 200 KB; 1.0 target 150 KB) |
 
 ## What “alpha” means here
 

@@ -1,0 +1,10 @@
+# Default reviewers for everything.
+* @ferrum-rs/maintainers
+
+# Crate-level ownership.
+/crates/ferrum-core/ @ferrum-rs/core
+/crates/ferrum-reconciler/ @ferrum-rs/core
+/crates/ferrum-web/ @ferrum-rs/renderers
+/crates/ferrum-native/ @ferrum-rs/renderers
+/crates/ferrum-security/ @ferrum-rs/security
+/.github/workflows/ @ferrum-rs/ci

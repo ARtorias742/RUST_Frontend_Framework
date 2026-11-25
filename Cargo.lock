@@ -118,6 +118,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "example-realworld"
+version = "0.1.0"
+dependencies = [
+ "ferrum-components",
+ "ferrum-core",
+ "ferrum-styling",
+ "ferrum-web",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "example-shared"
 version = "0.1.0"
 dependencies = [

@@ -23,6 +23,19 @@ validate the design with real applications before 1.0.
 4. **One component, many backends.** Web, headless, and native share the
    reconciler.
 
+## Why Ferrum
+
+- Rust end to end, one type system, no JS bridge in component code.
+- A small explicit core with replaceable renderers.
+- Safe by default: no `eval`, escaped SSR, allowlist sanitizer, nonce CSP.
+- Router, data, styling, 30 components, DevTools and SSR in the crate graph.
+
+## Demo
+
+The alpha demo is a persistent task board built with the public API only:
+[`examples/realworld`](quickstart.md). It is deployed at `/demo/` on GitHub
+Pages.
+
 ## Non-goals (for 1.0)
 
 - A full React clone (concurrent rendering, Suspense, transitions).
