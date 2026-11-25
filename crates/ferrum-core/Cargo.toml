@@ -1,5 +1,5 @@
 [package]
-name = "ferrum-core"
+name = "ferrum-rs-core"
 description = "Core IR (VNode), components, props, keys and events for the Ferrum frontend framework"
 version.workspace = true
 edition.workspace = true
@@ -10,6 +10,9 @@ keywords.workspace = true
 categories.workspace = true
 rust-version.workspace = true
 exclude.workspace = true
+
+[lib]
+name = "ferrum_core"
 
 [dependencies]
 ferrum-macro = { workspace = true }

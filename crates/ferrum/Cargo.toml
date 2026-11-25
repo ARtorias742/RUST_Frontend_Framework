@@ -1,5 +1,5 @@
 [package]
-name = "ferrum"
+name = "ferrum-framework"
 description = "Ferrum: a Rust frontend framework (React-style components, hooks, SSR, native) — 0.1 alpha facade"
 version.workspace = true
 edition.workspace = true
@@ -10,6 +10,9 @@ keywords.workspace = true
 categories.workspace = true
 rust-version.workspace = true
 exclude.workspace = true
+
+[lib]
+name = "ferrum"
 
 [dependencies]
 ferrum-core = { workspace = true }

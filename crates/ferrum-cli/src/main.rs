@@ -69,7 +69,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-ferrum-core = "0.1"
+ferrum-core = {{ package = "ferrum-rs-core", version = "0.1" }}
 ferrum-web = "0.1"
 wasm-bindgen = "0.2"
 web-sys = "0.3"
@@ -148,7 +148,9 @@ impl Template {
     fn extra_deps(&self) -> &'static str {
         match self {
             Template::Blank => "",
-            Template::Spa => "ferrum-router = \"0.1\"\n",
+            Template::Spa => {
+                "ferrum-router = { package = \"ferrum-rs-router\", version = \"0.1\" }\n"
+            }
             Template::Dashboard => "ferrum-components = \"0.1\"\nferrum-styling = \"0.1\"\n",
             Template::Ssr => "ferrum-ssr = \"0.1\"\nferrum-styling = \"0.1\"\n",
         }

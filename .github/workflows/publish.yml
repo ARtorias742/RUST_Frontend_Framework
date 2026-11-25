@@ -14,16 +14,17 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Publish crates in dependency order
         env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_TOKEN }}
         run: |
           if [ -z "${CARGO_REGISTRY_TOKEN:-}" ]; then
-            echo "CARGO_REGISTRY_TOKEN not set; skipping publish"
+            echo "CARGO_TOKEN not set; skipping publish"
             exit 0
           fi
-          for c in ferrum-macro ferrum-core ferrum-reconciler ferrum-styling \
-                   ferrum-testing ferrum-router ferrum-data ferrum-ssr \
+          for c in ferrum-macro ferrum-rs-core ferrum-reconciler ferrum-styling \
+                   ferrum-testing ferrum-rs-router ferrum-data ferrum-ssr \
                    ferrum-native ferrum-lazy ferrum-components ferrum-security \
-                   ferrum-registry ferrum-devtools ferrum-web ferrum; do
+                   ferrum-registry ferrum-devtools ferrum-web ferrum-framework \
+                   ferrum-ui-core ferrum-ui; do
             echo "publishing $c"
             cargo publish -p "$c" --token "$CARGO_REGISTRY_TOKEN" || exit 1
             sleep 5

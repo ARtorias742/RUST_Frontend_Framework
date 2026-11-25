@@ -14,11 +14,11 @@ categories = ["web-programming", "wasm", "gui"]
 exclude = ["website/**", "e2e/**", "fuzz/**", ".github/**", "docs/**"]
 
 [workspace.dependencies]
-ferrum-core = { path = "crates/ferrum-core", version = "0.1.0" }
+ferrum-core = { path = "crates/ferrum-core", version = "0.1.0", package = "ferrum-rs-core" }
 ferrum-macro = { path = "crates/ferrum-macro", version = "0.1.0" }
 ferrum-reconciler = { path = "crates/ferrum-reconciler", version = "0.1.0" }
 ferrum-web = { path = "crates/ferrum-web", version = "0.1.0" }
-ferrum-router = { path = "crates/ferrum-router", version = "0.1.0" }
+ferrum-router = { path = "crates/ferrum-router", version = "0.1.0", package = "ferrum-rs-router" }
 ferrum-data = { path = "crates/ferrum-data", version = "0.1.0" }
 ferrum-styling = { path = "crates/ferrum-styling", version = "0.1.0" }
 ferrum-components = { path = "crates/ferrum-components", version = "0.1.0" }

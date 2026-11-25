@@ -41,7 +41,7 @@ scripts/install.sh
 #    then Extensions → ⋯ → Install from VSIX
 
 # 3. Cargo (once 0.1 is published)
-cargo add ferrum
+cargo add ferrum-framework
 ```
 
 ## Ferrum UI
