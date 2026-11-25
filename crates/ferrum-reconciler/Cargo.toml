@@ -12,4 +12,4 @@ rust-version.workspace = true
 exclude.workspace = true
 
 [dependencies]
-ferrum-core = { path = "../ferrum-core", package = "ferrum-rs-core" }
+ferrum-core = { path = "../ferrum-core", package = "ferrum-rs-core", version = "0.1.0" }

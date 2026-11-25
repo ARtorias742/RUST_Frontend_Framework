@@ -20,4 +20,4 @@ quote = "1"
 proc-macro2 = "1"
 
 [dev-dependencies]
-ferrum-core = { path = "../ferrum-core", package = "ferrum-rs-core" }
+ferrum-core = { path = "../ferrum-core", package = "ferrum-rs-core", version = "0.1.0" }
