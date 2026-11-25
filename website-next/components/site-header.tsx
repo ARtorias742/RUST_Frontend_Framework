@@ -28,7 +28,7 @@ export function SiteHeader() {
             Status
           </Link>
           <a
-            href="https://github.com/ferrum-rs/ferrum"
+            href="https://github.com/ARtorias742/RUST_Frontend_Framework"
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -39,7 +39,7 @@ export function SiteHeader() {
 
         <Button asChild size="sm" variant="outline">
           <a
-            href="https://github.com/ferrum-rs/ferrum/blob/main/README.md"
+            href="https://github.com/ARtorias742/RUST_Frontend_Framework/blob/main/README.md"
             target="_blank"
             rel="noreferrer"
           >

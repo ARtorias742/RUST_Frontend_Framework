@@ -44,7 +44,7 @@ function showPanel(context: vscode.ExtensionContext) {
   <p class="muted">A Rust frontend framework. Not production-ready.</p>
 
   <p>Install the CLI:</p>
-  <p><code>cargo install --git https://github.com/ferrum-rs/ferrum --bin ferrum --locked</code></p>
+  <p><code>cargo install --git https://github.com/ARtorias742/RUST_Frontend_Framework --bin ferrum --locked</code></p>
 
   <div class="grid">
     <div class="card"><strong>Dev server</strong><br /><span class="muted">Command palette → Ferrum: Start dev server</span></div>

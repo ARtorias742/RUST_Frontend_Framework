@@ -6,7 +6,7 @@ framework (**0.1 alpha**).
 ## Install (from VSIX)
 
 1. Download `ferrum-0.1.0.vsix` from the
-   [alpha release](https://github.com/ferrum-rs/ferrum/releases).
+   [alpha release](https://github.com/ARtorias742/RUST_Frontend_Framework/releases).
 2. In VS Code: **Extensions** panel → **⋯** → **Install from VSIX…**.
 3. Reload the window.
 

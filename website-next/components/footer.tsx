@@ -25,7 +25,7 @@ export function Footer() {
             Install
           </Link>
           <a
-            href="https://github.com/ferrum-rs/ferrum"
+            href="https://github.com/ARtorias742/RUST_Frontend_Framework"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-1.5 hover:text-foreground"
@@ -34,7 +34,7 @@ export function Footer() {
             GitHub
           </a>
           <a
-            href="https://github.com/ferrum-rs/ferrum/blob/main/SECURITY.md"
+            href="https://github.com/ARtorias742/RUST_Frontend_Framework/blob/main/SECURITY.md"
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"

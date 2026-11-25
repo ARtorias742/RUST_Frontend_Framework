@@ -35,7 +35,7 @@ The crates are not on crates.io yet. Three options:
 ```bash
 # 1. CLI from source (scaffold, dev server, build, release)
 scripts/install.sh
-# or: cargo install --git https://github.com/ferrum-rs/ferrum --bin ferrum --locked
+# or: cargo install --git https://github.com/ARtorias742/RUST_Frontend_Framework --bin ferrum --locked
 
 # 2. VS Code extension: download the .vsix from Releases,
 #    then Extensions → ⋯ → Install from VSIX
@@ -59,7 +59,7 @@ headless behavior (focus scope, roving tabindex) lives in `ferrum-ui-core`.
 The published crates are not on crates.io yet, so use the workspace examples:
 
 ```bash
-git clone https://github.com/ferrum-rs/ferrum
+git clone https://github.com/ARtorias742/RUST_Frontend_Framework
 cd ferrum
 
 # Native debug render (no browser needed)

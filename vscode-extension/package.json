@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ferrum-rs/ferrum"
+    "url": "https://github.com/ARtorias742/RUST_Frontend_Framework"
   },
   "engines": {
     "vscode": "^1.90.0"

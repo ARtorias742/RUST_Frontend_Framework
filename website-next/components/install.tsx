@@ -7,7 +7,7 @@ import { CopyButton } from "@/components/copy-button";
 
 const CARGO = "cargo add ferrum";
 const CLI =
-  "cargo install --git https://github.com/ferrum-rs/ferrum --bin ferrum --locked";
+  "cargo install --git https://github.com/ARtorias742/RUST_Frontend_Framework --bin ferrum --locked";
 
 export function Install() {
   return (
@@ -57,12 +57,20 @@ export function Install() {
               then Extensions → ⋯ → Install from VSIX.
             </p>
             <a
-              href="https://github.com/ferrum-rs/ferrum/releases"
+              href="https://github.com/ARtorias742/RUST_Frontend_Framework/releases/tag/v0.1.0-alpha"
               target="_blank"
               rel="noreferrer"
               className="mt-4 inline-block text-sm text-primary hover:underline"
             >
               Download the alpha release →
+            </a>
+            <a
+              href="https://github.com/ARtorias742/RUST_Frontend_Framework/releases/download/v0.1.0-alpha/ferrum-0.1.0.vsix"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 block text-sm text-primary hover:underline"
+            >
+              Direct .vsix download →
             </a>
           </motion.div>
 

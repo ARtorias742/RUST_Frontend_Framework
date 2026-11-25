@@ -22,7 +22,7 @@ export function Status() {
             is still being verified.
           </p>
           <Link
-            href="https://github.com/ferrum-rs/ferrum/blob/main/README.md"
+            href="https://github.com/ARtorias742/RUST_Frontend_Framework/blob/main/README.md"
             className="mt-5 inline-block text-sm text-primary hover:underline"
           >
             Read the full status and known gaps →

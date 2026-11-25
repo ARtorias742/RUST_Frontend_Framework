@@ -6,5 +6,5 @@ language = "en"
 
 [output.html]
 default-theme = "rust"
-git-repository-url = "https://github.com/ferrum-rs/ferrum"
-edit-url-template = "https://github.com/ferrum-rs/ferrum/edit/main/website/{path}"
+git-repository-url = "https://github.com/ARtorias742/RUST_Frontend_Framework"
+edit-url-template = "https://github.com/ARtorias742/RUST_Frontend_Framework/edit/main/website/{path}"

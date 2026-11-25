@@ -7,7 +7,7 @@ import { ArrowRight, Play, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CopyButton } from "@/components/copy-button";
 
-const INSTALL = "cargo install --git https://github.com/ferrum-rs/ferrum --bin ferrum --locked";
+const INSTALL = "cargo install --git https://github.com/ARtorias742/RUST_Frontend_Framework --bin ferrum --locked";
 
 export function Hero() {
   return (
